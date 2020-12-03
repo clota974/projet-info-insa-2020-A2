@@ -106,12 +106,12 @@ type
 const
   birdX: integer = 50; { Position de l'oiseau }
   birdY0: integer = 500; { Position de départ de l'oiseau }
-  obstacleWidth: integer = 100; { Largeur de l'obstacle }
+  obstacleWidth: integer = 10; { Largeur de l'obstacle }
   obstacleSpace: integer = 250; { Intervalle Y entre la partie haute et basse d'un même obstacle }
   obstacleStep: integer = 10; { Facteur d'incrémentation de la position à chaque boucle }
   obstacleInterval : integer = 550; { Distance avant le prochain obstacle }
   gravity: integer = 2; { Facteur de gravité }
-  birdWidth: integer = 50; { Taille de l'oiseau }
+  birdWidth: integer = 10; { Taille de l'oiseau }
   { V2 }
   layersTotal: integer = 3;
   layers : array[0..2] of integer = (3,5,1);
@@ -555,7 +555,7 @@ begin
   // sdlWindow1 := SDL_CreateWindow( 'Window1', 50, 50, 500, 500, SDL_WINDOW_SHOWN or SDL_WINDOW_ALLOW_HIGHDPI );
   write('hellp');
 
-  sdlWindow1 := SDL_SetVideoMode(640, 640, 32, SDL_SWSURFACE);
+  sdlWindow1 := SDL_SetVideoMode(500, 500, 32, SDL_SWSURFACE);
   if sdlWindow1 = nil then HALT;
 
   // sdlRenderer := SDL_CreateRenderer(sdlWindow1, -1, SDL_RENDERER_ACCELERATED);
