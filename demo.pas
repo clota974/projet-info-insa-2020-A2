@@ -108,12 +108,12 @@ type
 const
   birdX: integer = 50; { Position de l'oiseau }
   birdY0: integer = 500; { Position de départ de l'oiseau }
-  obstacleWidth: integer = 10; { Largeur de l'obstacle }
-  obstacleSpace: integer = 250; { Intervalle Y entre la partie haute et basse d'un même obstacle }
+  obstacleWidth: integer = 100; { Largeur de l'obstacle }
+  obstacleSpace: integer = 150; { Intervalle Y entre la partie haute et basse d'un même obstacle }
   obstacleStep: integer = 10; { Facteur d'incrémentation de la position à chaque boucle }
   obstacleInterval : integer = 550; { Distance avant le prochain obstacle }
   gravity: integer = 2; { Facteur de gravité }
-  birdWidth: integer = 10; { Taille de l'oiseau }
+  birdWidth: integer = 50; { Taille de l'oiseau }
   { V2 }
   layersTotal: integer = 3;
   layers : array[0..2] of integer = (3,5,1);
@@ -523,18 +523,18 @@ procedure Obstacle.reset(ix: integer);
 begin
   x := (1 + ix) * obstacleInterval;
   // y1 := 400;
-  y1 := ceil(rand(100,600));
+  y1 := ceil(rand(100,300));
   y2 := y1 + obstacleSpace;
 
   sprites[0].x := x;
   sprites[0].y := 0;
-  sprites[0].w := 1; { IGNORED }
-  sprites[0].h := 1; { IGNORED }
+  sprites[0].w := obstacleWidth; { IGNORED }
+  sprites[0].h := y1; { IGNORED }
 
   sprites[1].x := x;
   sprites[1].y := y2;
-  sprites[1].w := 1; { IGNORED }
-  sprites[1].h := 1; { IGNORED }
+  sprites[1].w := obstacleWidth; { IGNORED }
+  sprites[1].h := 1000; { IGNORED }
 
   blitRects[0].w := obstacleWidth;
   blitRects[0].h := y1;
@@ -591,7 +591,9 @@ begin
     end;
     {SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);}
     {SDL_RenderClear(sdlRenderer);}
-
+    
+    SDL_FillRect(sdlWindow1, nil, $FFFFFF);
+    
     if (populationRemaining <= 0) then
     begin
       SetLength(ranking, populationTotal);
