@@ -1,0 +1,4 @@
+*.o
+*.res
+ppaslink.sh
+.DS_Store

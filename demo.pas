@@ -150,6 +150,7 @@ var
   ranking : array of bird;
   memCoords: coordsPtr;
   imageBird : PSDL_Surface;
+  imageObstacle : PSDL_Surface;
 
 function rand(min, max : real) : real;
 begin
@@ -535,7 +536,8 @@ begin
 
   if SDL_Init( SDL_INIT_VIDEO ) < 0 then HALT;
 
-  imageBird := IMG_Load('./shark.jpg');
+  imageBird := IMG_Load('./res/shark.jpg');
+  imageObstacle := IMG_Load('./res/obstacle.png');
 
   SetLength(birds, populationTotal);
   for i := 0 to populationTotal - 1 do
@@ -648,7 +650,8 @@ begin
         colorFactor := 255;
         topOfNextObstacle := obstacles[i].getTop();
       end;
-      SDL_BlitSurface(imageObstacle, NIL, sdlWindow, obstacles[i].getSprite()); { TODO }
+      SDL_BlitSurface(imageObstacle, NIL, sdlWindow1, obstacles[i].getSpriteAddress(0)); { TODO }
+      SDL_BlitSurface(imageObstacle, NIL, sdlWindow1, obstacles[i].getSpriteAddress(1)); { TODO }
     end;
 
     i := populationTotal;
