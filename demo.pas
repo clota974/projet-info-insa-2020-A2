@@ -152,7 +152,7 @@ var
   features : array of real; { FINAL ARRAY OF INPUTS }
   ranking : array of bird;
   memCoords: coordsPtr;
-  imageBird : PSDL_Surface;
+  imageBird, blitImage, bestBird : PSDL_Surface;
   imageObstacle : PSDL_Surface;
 
 function rand(min, max : real) : real;
@@ -561,7 +561,8 @@ begin
 
   if SDL_Init( SDL_INIT_VIDEO ) < 0 then HALT;
 
-  imageBird := IMG_Load('./res/shark.jpg');
+  imageBird := IMG_Load('./res/shark.png');
+  bestBird := IMG_Load('./res/best_shark.png');
   imageObstacle := IMG_Load('./res/obstacle.png');
 
 
@@ -698,15 +699,16 @@ begin
           if obstacles[k].testCollision(memCoords^.y) then
           begin
             ranking[i].die();
-            continue;
           end;
       end;
 
       ranking[i].update([distanceToNextObstacle/ 1000, topOfNextObstacle / 1000 ]);
       colorFactor := 0;
-      if (i = 0) then colorFactor := 255;
 
-      SDL_BlitSurface(imageBird, birds[i].getBlitRectAddress(), sdlWindow1, birds[i].getSpriteAddress()); { TODO }
+      blitImage := imageBird;
+      if (i = 0) then blitImage := bestBird;
+
+      SDL_BlitSurface(blitImage, ranking[i].getBlitRectAddress(), sdlWindow1, ranking[i].getSpriteAddress()); { TODO }
     end;
     SDL_Flip(sdlWindow1);
     SDL_Delay( 15 );
