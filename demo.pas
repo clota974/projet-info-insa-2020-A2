@@ -76,7 +76,7 @@ type
   private
     y, speedY, accelY, x, score: integer;
     alive, ranked: boolean;
-    sprite: TSDL_Rect;
+    sprite, blitRect: TSDL_Rect;
     myBrain: Brain;
 
   public
@@ -95,6 +95,7 @@ type
     function getCoordinates() : coordsPtr;
     function getSprite(): TSDL_Rect;
     function getSpriteAddress(): PSDL_Rect;
+    function getBlitRectAddress(): PSDL_Rect;
     function reset() : integer; { Returns score }
     function getScore(): integer;
     function getBrain() : perceptronType;
@@ -339,6 +340,11 @@ begin
   sprite.x := x;
   sprite.y := y;
 
+  blitRect.w := birdWidth;
+  blitRect.h := birdWidth;
+  blitRect.x := 0; { BLIT AT ORIGIN }
+  blitRect.y := 0;
+
   ran := Random(10000);
 
   createBrain();
@@ -444,6 +450,11 @@ end;
 function Bird.getSpriteAddress() : PSDL_Rect;
 begin
   getSpriteAddress := @sprite;
+end;
+
+function Bird.getBlitRectAddress() : PSDL_Rect;
+begin
+  getBlitRectAddress := @blitRect;
 end;
 
 function Bird.getScore() : Integer;
@@ -591,9 +602,9 @@ begin
     end;
     {SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);}
     {SDL_RenderClear(sdlRenderer);}
-    
+
     SDL_FillRect(sdlWindow1, nil, $FFFFFF);
-    
+
     if (populationRemaining <= 0) then
     begin
       SetLength(ranking, populationTotal);
@@ -695,7 +706,7 @@ begin
       colorFactor := 0;
       if (i = 0) then colorFactor := 255;
 
-      SDL_BlitSurface(imageBird, birds[i].getSpriteAddress(), sdlWindow1, birds[i].getSpriteAddress()); { TODO }
+      SDL_BlitSurface(imageBird, birds[i].getBlitRectAddress(), sdlWindow1, birds[i].getSpriteAddress()); { TODO }
     end;
     SDL_Flip(sdlWindow1);
     SDL_Delay( 15 );
