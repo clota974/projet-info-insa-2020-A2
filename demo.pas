@@ -698,8 +698,8 @@ begin
           if obstacles[k].testCollision(memCoords^.y) then
           begin
             ranking[i].die();
+            continue;
           end;
-          freemem(memCoords);
       end;
 
       ranking[i].update([distanceToNextObstacle/ 1000, topOfNextObstacle / 1000 ]);
