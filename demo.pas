@@ -650,8 +650,8 @@ begin
         colorFactor := 255;
         topOfNextObstacle := obstacles[i].getTop();
       end;
-      SDL_BlitSurface(imageObstacle, NIL, sdlWindow1, obstacles[i].getSpriteAddress(0)); { TODO }
-      SDL_BlitSurface(imageObstacle, NIL, sdlWindow1, obstacles[i].getSpriteAddress(1)); { TODO }
+      SDL_BlitSurface(imageObstacle, obstacles[i].getSpriteAddress(0), sdlWindow1, obstacles[i].getSpriteAddress(0)); { TODO }
+      SDL_BlitSurface(imageObstacle, obstacles[i].getSpriteAddress(1), sdlWindow1, obstacles[i].getSpriteAddress(1)); { TODO }
     end;
 
     i := populationTotal;
@@ -678,7 +678,7 @@ begin
       colorFactor := 0;
       if (i = 0) then colorFactor := 255;
 
-      SDL_BlitSurface(imageBird, NIL, sdlWindow1, birds[i].getSpriteAddress()); { TODO }
+      SDL_BlitSurface(imageBird, birds[i].getSpriteAddress(), sdlWindow1, birds[i].getSpriteAddress()); { TODO }
     end;
     SDL_Flip(sdlWindow1);
     SDL_Delay( 15 );
