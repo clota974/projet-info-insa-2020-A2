@@ -58,12 +58,14 @@ type
   private
     x, y1, y2: integer;
     sprites: array[0..1] of TSDL_Rect;
+    blitRects: array[0..1] of TSDL_Rect;
 
   public
     constructor create(ix : integer);
     function update() : integer; {Returns X position of obstacles}
     function testCollision(birdY: integer) : boolean;
     function getSpriteAddress(ix : integer) : PSDL_Rect;
+    function getBlitRectAddress(ix : integer) : PSDL_Rect;
     function getTop() : real;
 
     procedure reset(ix : integer);
@@ -501,6 +503,11 @@ begin
   update := x;
 end;
 
+function Obstacle.getBlitRectAddress(ix: Integer) : PSDL_Rect;
+begin
+  getBlitRectAddress := @blitRects[ix];
+end;
+
 function Obstacle.getSpriteAddress(ix: integer) : PSDL_Rect;
 begin
   getSpriteAddress := @sprites[ix];
@@ -511,6 +518,7 @@ begin
   getTop := sprites[0].h;
 end;
 
+
 procedure Obstacle.reset(ix: integer);
 begin
   x := (1 + ix) * obstacleInterval;
@@ -520,13 +528,19 @@ begin
 
   sprites[0].x := x;
   sprites[0].y := 0;
-  sprites[0].w := obstacleWidth;
-  sprites[0].h := y1;
+  sprites[0].w := 1; { IGNORED }
+  sprites[0].h := 1; { IGNORED }
 
   sprites[1].x := x;
   sprites[1].y := y2;
-  sprites[1].w := obstacleWidth;
-  sprites[1].h := 1000;
+  sprites[1].w := 1; { IGNORED }
+  sprites[1].h := 1; { IGNORED }
+
+  blitRects[0].w := obstacleWidth;
+  blitRects[0].h := y1;
+
+  blitRects[1].w := obstacleWidth;
+  blitRects[1].h := 1000;
 end;
 
 { # Beginning of program }
@@ -538,6 +552,7 @@ begin
 
   imageBird := IMG_Load('./res/shark.jpg');
   imageObstacle := IMG_Load('./res/obstacle.png');
+
 
   SetLength(birds, populationTotal);
   for i := 0 to populationTotal - 1 do
@@ -650,8 +665,8 @@ begin
         colorFactor := 255;
         topOfNextObstacle := obstacles[i].getTop();
       end;
-      SDL_BlitSurface(imageObstacle, obstacles[i].getSpriteAddress(0), sdlWindow1, obstacles[i].getSpriteAddress(0)); { TODO }
-      SDL_BlitSurface(imageObstacle, obstacles[i].getSpriteAddress(1), sdlWindow1, obstacles[i].getSpriteAddress(1)); { TODO }
+      SDL_BlitSurface(imageObstacle, obstacles[i].getBlitRectAddress(0), sdlWindow1, obstacles[i].getSpriteAddress(0)); { TODO }
+      SDL_BlitSurface(imageObstacle, obstacles[i].getBlitRectAddress(1), sdlWindow1, obstacles[i].getSpriteAddress(1)); { TODO }
     end;
 
     i := populationTotal;
