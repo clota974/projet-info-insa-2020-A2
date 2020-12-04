@@ -624,7 +624,7 @@ begin
 
         //keyboard events
         SDL_KEYDOWN: begin
-          if sdlEvent^.key.keysym.sym = SDLK_SPACE then birds[0].jump();
+          if sdlEvent^.key.keysym.sym = SDLK_SPACE then ranking[0].jump();
           if sdlEvent^.key.keysym.sym = SDLK_RETURN then state := 'playing';
           if state = 'menu' then
           begin
@@ -651,7 +651,7 @@ begin
       break;
     end;
 
-    if (populationRemaining <= 0) and (choice = 0) then
+    if (populationRemaining <= 0) and (choice = 1) then
     begin
       SetLength(ranking, populationTotal);
       distanceToNextObstacle := 1000;
@@ -680,6 +680,11 @@ begin
             break;
           end;
         end;
+      end;
+
+      if (choice = 0) and ranking[0].isAlive() = false then
+      begin
+        exitloop := true;
       end;
 
       {ONCE RANKING DONE...}
