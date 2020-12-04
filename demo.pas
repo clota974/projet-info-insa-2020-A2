@@ -578,7 +578,7 @@ begin
     if (choice = i) then
       color := $FF0000;
 
-    SDL_BlitSurface(imageButton, nil, @surface, @buttons[i]);
+    SDL_BlitSurface(imageButton, nil, sdlWindow1, @buttons[i]);
     write('3');
   end;
 end;
