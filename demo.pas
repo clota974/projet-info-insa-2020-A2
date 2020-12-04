@@ -589,7 +589,7 @@ begin
   if SDL_Init( SDL_INIT_VIDEO ) < 0 then HALT;
   //initilization of video subsystem
 
-   imageBird := IMG_Load('./res/shark.png');
+  imageBird := IMG_Load('./res/shark.png');
   bestBird := IMG_Load('./res/best_shark.png');
   imageObstacle := IMG_Load('./res/obstacle.png');
 
@@ -653,6 +653,7 @@ begin
       exitloop := true;
     end;
 
+    writeln('Ranking...');
     if (populationRemaining <= 0) then
     begin
       SetLength(ranking, populationTotal);
@@ -683,6 +684,7 @@ begin
           end;
         end;
       end;
+      writeln('Ranking done');
 
       {ONCE RANKING DONE...}
       writeln(ranking[0].getScore());
