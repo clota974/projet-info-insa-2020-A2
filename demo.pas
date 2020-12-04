@@ -564,19 +564,18 @@ begin
   surface.w := 400;
   surface.h := 100;
 
-  imageButton := IMG_Load('./res/button.png');
 
   for i := 0 to 2 do
   begin
     buttons[i].w := 400;
     buttons[i].h := 100;
     buttons[i].x := 50;
-    buttons[i].y := i * 110;
+    buttons[i].y := i * 220;
 
-    if choice = i then imageButton := IMG_Load('./res/button.png');
+    imageButton := IMG_Load('./res/button.png');
+    if choice = i then imageButton := IMG_Load('./res/selected.png');
 
     SDL_BlitSurface(imageButton, nil, sdlWindow1, @buttons[i]);
-    write('h');
   end;
 end;
 
