@@ -590,28 +590,25 @@ begin
   //initilization of video subsystem
 
    imageBird := IMG_Load('./res/shark.png');
-    bestBird := IMG_Load('./res/best_shark.png');
-    imageObstacle := IMG_Load('./res/obstacle.png');
+  bestBird := IMG_Load('./res/best_shark.png');
+  imageObstacle := IMG_Load('./res/obstacle.png');
 
 
-    SetLength(birds, populationTotal);
-    for i := 0 to populationTotal - 1 do
-    begin
-      birds[i] := Bird.create();
-    end;
+  SetLength(birds, populationTotal);
+  for i := 0 to populationTotal - 1 do
+  begin
+    birds[i] := Bird.create();
+  end;
 
-    for i := 0 to 9 do
-    begin
-      obstacles[i] := Obstacle.create(i);
-    end;
+  for i := 0 to 9 do
+  begin
+    obstacles[i] := Obstacle.create(i);
+  end;
 
-
-  // sdlWindow1 := SDL_CreateWindow( 'Window1', 50, 50, 500, 500, SDL_WINDOW_SHOWN or SDL_WINDOW_ALLOW_HIGHDPI );
 
   sdlWindow1 := SDL_SetVideoMode(500, 500, 32, SDL_SWSURFACE);
   if sdlWindow1 = nil then HALT;
 
-  // sdlRenderer := SDL_CreateRenderer(sdlWindow1, -1, SDL_RENDERER_ACCELERATED);
   new( sdlEvent );
 
   while exitloop = false do
@@ -635,8 +632,6 @@ begin
         end;
       end;
     end;
-    {SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);}
-    {SDL_RenderClear(sdlRenderer);}
 
     SDL_FillRect(sdlWindow1, nil, $FFFFFF);
 
@@ -658,7 +653,7 @@ begin
       exitloop := true;
     end;
 
-    if (populationRemaining <= 0) and (choice = 1) then
+    if (populationRemaining <= 0) then
     begin
       SetLength(ranking, populationTotal);
       distanceToNextObstacle := 1000;
