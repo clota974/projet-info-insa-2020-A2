@@ -562,9 +562,11 @@ var
   buttons : array[0..2] of TSDL_Rect;
   surface : TSDL_Surface;
 begin
+  write('1');
   surface.w := 400;
   surface.h := 100;
 
+  write('2');
   for i := 0 to 2 do
   begin
     buttons[i].w := 400;
@@ -578,6 +580,7 @@ begin
       color := $FF0000;
 
     SDL_FillRect(@surface, @buttons[i], color);
+    write('3');
   end;
 end;
 
