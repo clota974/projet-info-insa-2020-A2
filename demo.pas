@@ -731,6 +731,7 @@ begin
     begin
       i := i - 1;
 
+      write('i=', i);
       if (ranking[i].isAlive() = false) then
       begin
         continue;
