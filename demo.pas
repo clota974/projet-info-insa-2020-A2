@@ -154,7 +154,6 @@ var
   memCoords: coordsPtr;
   imageBird, blitImage, bestBird : PSDL_Surface;
   imageObstacle : PSDL_Surface;
-  buttons : array[0..3] of TSDL_Rect;
   state : String;
   choice : Integer;
 
@@ -558,8 +557,14 @@ begin
 end;
 
 procedure showMenu();
-var color : LongInt;
+var
+  color : LongInt;
+  buttons : array[0..2] of TSDL_Rect;
+  surface : TSDL_Surface;
 begin
+  surface.w := 400;
+  surface.h := 100;
+
   for i := 0 to 2 do
   begin
     buttons[i].w := 400;
@@ -572,7 +577,7 @@ begin
     if (choice = i) then
       color := $FF0000;
 
-    SDL_FillRect(sdlWindow1, @buttons[i], color);
+    SDL_FillRect(@surface, @buttons[i], color);
   end;
 end;
 
