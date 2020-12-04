@@ -644,14 +644,14 @@ begin
       showMenu();
       continue;
     end
-    else if (choice = 3) then
+    else if (choice = 2) then
     begin
       exitloop := true;
       write('bye');
       break;
     end;
 
-    if (populationRemaining <= 0) and (choice = 1) then
+    if (populationRemaining <= 0) and (choice = 0) then
     begin
       SetLength(ranking, populationTotal);
       distanceToNextObstacle := 1000;
@@ -754,7 +754,7 @@ begin
 
       SDL_BlitSurface(blitImage, ranking[i].getBlitRectAddress(), sdlWindow1, ranking[i].getSpriteAddress()); { TODO }
 
-      if (choice = 1) then break;
+      if (choice = 0) then break;
     end;
   end;
 
