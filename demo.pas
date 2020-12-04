@@ -581,7 +581,7 @@ end;
 { # Beginning of program }
 begin
   exitloop := false;
-  state := 'dd';
+  state := 'menu';
   choice := 0;
   randomize;
 
@@ -615,6 +615,7 @@ begin
 
   while exitloop = false do
   begin
+    SDL_Flip(sdlWindow1);
     SDL_Delay( 30 );
     while SDL_PollEvent( sdlEvent ) = 1 do
     begin
@@ -742,7 +743,6 @@ begin
 
       SDL_BlitSurface(blitImage, ranking[i].getBlitRectAddress(), sdlWindow1, ranking[i].getSpriteAddress()); { TODO }
     end;
-    SDL_Flip(sdlWindow1);
   end;
 
   dispose( sdlEvent );
