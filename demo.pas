@@ -647,6 +647,7 @@ begin
     else if (choice = 3) then
     begin
       exitloop := true;
+      break;
     end;
 
     if (populationRemaining <= 0) and (choice = 1) then
