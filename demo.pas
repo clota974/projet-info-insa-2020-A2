@@ -647,6 +647,7 @@ begin
     else if (choice = 3) then
     begin
       exitloop := true;
+      write('bye');
       break;
     end;
 
