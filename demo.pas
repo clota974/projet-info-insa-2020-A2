@@ -558,7 +558,7 @@ end;
 
 procedure showMenu();
 var
-  color : Integer;
+  color : LongInt;
   buttons : array[0..2] of TSDL_Rect;
   surface : TSDL_Surface;
 begin
@@ -618,6 +618,7 @@ begin
 
   while exitloop = false do
   begin
+    SDL_Delay( 15 );
     while SDL_PollEvent( sdlEvent ) = 1 do
     begin
       case sdlEvent^.type_ of
@@ -745,7 +746,6 @@ begin
       SDL_BlitSurface(blitImage, ranking[i].getBlitRectAddress(), sdlWindow1, ranking[i].getSpriteAddress()); { TODO }
     end;
     SDL_Flip(sdlWindow1);
-    SDL_Delay( 15 );
   end;
 
   dispose( sdlEvent );
