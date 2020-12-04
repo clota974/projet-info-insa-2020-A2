@@ -573,20 +573,15 @@ begin
     buttons[i].x := 100;
     buttons[i].y := i * 110;
 
-    color := $0000FF;
-
-    if (choice = i) then
-      color := $FF0000;
-
     SDL_BlitSurface(imageButton, nil, sdlWindow1, @buttons[i]);
-    write('3');
+    write('h');
   end;
 end;
 
 { # Beginning of program }
 begin
   exitloop := false;
-  state := 'menu';
+  state := 'dd';
   choice := 0;
   randomize;
 
