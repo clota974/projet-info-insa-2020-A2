@@ -651,10 +651,11 @@ begin
       break;
     end;
 
-    if (choice = 0) and ranking[0].isAlive() = false then
-      begin
-        exitloop := true;
-      end;
+    if (choice = 0) and (ranking[0].isAlive() = false) then
+    begin
+      write('bye')
+      exitloop := true;
+    end;
 
     if (populationRemaining <= 0) then
     begin
@@ -688,8 +689,7 @@ begin
       end;
 
       {ONCE RANKING DONE...}
-      write(ranking[0].getScore(), ' ');
-      writeln(' ');
+      writeln(ranking[0].getScore());
       for k := 0 to populationTotal - 1 do
       begin
         if k / populationTotal > ellitism then
