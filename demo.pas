@@ -653,7 +653,7 @@ begin
 
     if (choice = 0) and (ranking[0].isAlive() = false) then
     begin
-      write('bye')
+      write('bye');
       exitloop := true;
     end;
 
