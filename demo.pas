@@ -623,7 +623,11 @@ begin
         SDL_KEYDOWN: begin
           if sdlEvent^.key.keysym.sym = SDLK_SPACE then ranking[0].jump();
           if sdlEvent^.key.keysym.sym = SDLK_ESCAPE then state := 'menu';
-          if sdlEvent^.key.keysym.sym = SDLK_RETURN then state := 'playing';
+          if sdlEvent^.key.keysym.sym = SDLK_RETURN then
+          begin
+            state := 'playing';
+            populationRemaining := -1; { RESET }
+          end;
           if state = 'menu' then
           begin
             if (sdlEvent^.key.keysym.sym = SDLK_DOWN) and (choice < 2) then choice := choice + 1;
