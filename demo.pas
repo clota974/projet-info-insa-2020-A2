@@ -377,7 +377,7 @@ begin
 
   // features[2] := (y / 1000) - features[2];
 
-  if myBrain.decide(features) then jump();
+  if myBrain.decide(features) and (choice = 1) then jump();
 
   if (y > 450) or (y < 0) then die();
   sprite.y := y;
@@ -570,7 +570,7 @@ begin
     buttons[i].w := 400;
     buttons[i].h := 100;
     buttons[i].x := 50;
-    buttons[i].y := i * 220;
+    buttons[i].y := i * 110 + 110;
 
     imageButton := IMG_Load('./res/button.png');
     if choice = i then imageButton := IMG_Load('./res/selected.png');
@@ -625,9 +625,12 @@ begin
         //keyboard events
         SDL_KEYDOWN: begin
           if sdlEvent^.key.keysym.sym = SDLK_SPACE then birds[0].jump();
-          if sdlEvent^.key.keysym.sym = SDLK_ESCAPE then exitloop := true;
-          if (sdlEvent^.key.keysym.sym = SDLK_DOWN) and (choice < 2) then choice := choice + 1;
-          if (sdlEvent^.key.keysym.sym = SDLK_UP) and (choice > 0) then choice := choice - 1;
+          if sdlEvent^.key.keysym.sym = SDLK_RETURN then state := 'playing';
+          if state = 'menu' then
+          begin
+            if (sdlEvent^.key.keysym.sym = SDLK_DOWN) and (choice < 2) then choice := choice + 1;
+            if (sdlEvent^.key.keysym.sym = SDLK_UP) and (choice > 0) then choice := choice - 1;
+          end;
         end;
       end;
     end;
@@ -640,9 +643,13 @@ begin
     begin
       showMenu();
       continue;
+    end
+    else if (choice = 3) then
+    begin
+      exitloop := true;
     end;
 
-    if (populationRemaining <= 0) then
+    if (populationRemaining <= 0) and (choice = 1) then
     begin
       SetLength(ranking, populationTotal);
       distanceToNextObstacle := 1000;
@@ -712,7 +719,6 @@ begin
       colorFactor := 0;
       if distanceToNextObstacle = potentialObstacleMemory then
       begin
-        colorFactor := 255;
         topOfNextObstacle := obstacles[i].getTop();
       end;
       SDL_BlitSurface(imageObstacle, obstacles[i].getBlitRectAddress(0), sdlWindow1, obstacles[i].getSpriteAddress(0)); { TODO }
@@ -745,6 +751,8 @@ begin
       if (i = 0) then blitImage := bestBird;
 
       SDL_BlitSurface(blitImage, ranking[i].getBlitRectAddress(), sdlWindow1, ranking[i].getSpriteAddress()); { TODO }
+
+      if (choice = 1) then break;
     end;
   end;
 
