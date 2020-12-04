@@ -506,7 +506,7 @@ function Obstacle.update() : integer;
 begin
   x := x - obstacleStep;
 
-  if (x < 0) then reset(9);
+  if (x < -obstacleWidth) then reset(9);
 
   sprites[0].x := x;
   sprites[1].x := x;
