@@ -678,11 +678,6 @@ begin
         end;
       end;
 
-      if (choice = 0) and (ranking[0].isAlive() = false) then
-      begin
-        state := 'menu';
-      end;
-
       {ONCE RANKING DONE...}
       writeln(ranking[0].getScore());
       for k := 0 to populationTotal - 1 do
@@ -730,9 +725,15 @@ begin
     begin
       i := i - 1;
 
-      write('i=', i);
       if (ranking[i].isAlive() = false) then
       begin
+        if (choice = 0) then
+        begin
+          state := 'menu';
+          break;
+        end;
+
+        {ELSE}
         continue;
       end;
 
