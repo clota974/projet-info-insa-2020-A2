@@ -651,7 +651,7 @@ begin
       break;
     end;
 
-    if (populationRemaining <= 0) and (choice = 1) then
+    if (populationRemaining <= 0) then
     begin
       SetLength(ranking, populationTotal);
       distanceToNextObstacle := 1000;
