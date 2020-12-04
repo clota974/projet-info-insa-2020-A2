@@ -344,8 +344,6 @@ begin
 
   blitRect.w := birdWidth;
   blitRect.h := birdWidth;
-  blitRect.x := 0; { BLIT AT ORIGIN }
-  blitRect.y := 0;
 
   ran := Random(10000);
 
@@ -576,7 +574,7 @@ begin
     if (choice = i) then
       color := $FF0000;
 
-    SDL_FillRect(sdlWindow1, @buttons[i], color);
+    SDL_FillRect(SDL_CreateRGBSurface(SDL_SWSURFACE, 400, 100, 8,0,0,0,0), @buttons[i], color);
     write('3');
   end;
 end;
@@ -618,7 +616,7 @@ begin
 
   while exitloop = false do
   begin
-    SDL_Delay( 15 );
+    SDL_Delay( 30 );
     while SDL_PollEvent( sdlEvent ) = 1 do
     begin
       case sdlEvent^.type_ of
