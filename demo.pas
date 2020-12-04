@@ -726,7 +726,7 @@ begin
     end;
 
     i := populationTotal;
-    if (choice = 2) then i := 1; { ONLY FIRST BIRD }
+    if (choice = 0) then i := 1; { ONLY FIRST BIRD }
     while i > 0 do
     begin
       i := i - 1;
