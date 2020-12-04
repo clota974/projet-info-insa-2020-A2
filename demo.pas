@@ -570,8 +570,10 @@ begin
   begin
     buttons[i].w := 400;
     buttons[i].h := 100;
-    buttons[i].x := 100;
+    buttons[i].x := 50;
     buttons[i].y := i * 110;
+
+    if choice = i then imageButton := IMG_Load('./res/button.png');
 
     SDL_BlitSurface(imageButton, nil, sdlWindow1, @buttons[i]);
     write('h');
@@ -625,6 +627,8 @@ begin
         SDL_KEYDOWN: begin
           if sdlEvent^.key.keysym.sym = SDLK_SPACE then birds[0].jump();
           if sdlEvent^.key.keysym.sym = SDLK_ESCAPE then exitloop := true;
+          if (sdlEvent^.key.keysym.sym = SDLK_DOWN) and (choice < 2) then choice := choice + 1;
+          if (sdlEvent^.key.keysym.sym = SDLK_UP) and (choice > 0) then choice := choice - 1;
         end;
       end;
     end;
