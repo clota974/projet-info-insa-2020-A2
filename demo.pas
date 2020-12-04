@@ -625,6 +625,7 @@ begin
         //keyboard events
         SDL_KEYDOWN: begin
           if sdlEvent^.key.keysym.sym = SDLK_SPACE then ranking[0].jump();
+          if sdlEvent^.key.keysym.sym = SDLK_ESCAPE then state := 'menu';
           if sdlEvent^.key.keysym.sym = SDLK_RETURN then state := 'playing';
           if state = 'menu' then
           begin
@@ -657,7 +658,7 @@ begin
       exitloop := true;
     end;
 
-    if (populationRemaining <= 0) then
+    if (populationRemaining <= 0) and (choice = 1) then
     begin
       SetLength(ranking, populationTotal);
       distanceToNextObstacle := 1000;
@@ -732,34 +733,40 @@ begin
       SDL_BlitSurface(imageObstacle, obstacles[i].getBlitRectAddress(1), sdlWindow1, obstacles[i].getSpriteAddress(1)); { TODO }
     end;
 
-    i := populationTotal;
-    while i > 0 do
+    if (choice = 1) then
     begin
-      i := i - 1;
-
-      if (ranking[i].isAlive() = false) then
+      i := populationTotal;
+      while i > 0 do
       begin
-        continue;
+        i := i - 1;
+
+        if (ranking[i].isAlive() = false) then
+        begin
+          continue;
+        end;
+
+        for k := 0 to 9 do
+        begin
+            memCoords := ranking[i].getCoordinates();
+            if obstacles[k].testCollision(memCoords^.y) then
+            begin
+              ranking[i].die();
+            end;
+        end;
+
+        ranking[i].update([distanceToNextObstacle/ 1000, topOfNextObstacle / 1000 ]);
+        colorFactor := 0;
+
+        blitImage := imageBird;
+        if (i = 0) then blitImage := bestBird;
+
+        SDL_BlitSurface(blitImage, ranking[i].getBlitRectAddress(), sdlWindow1, ranking[i].getSpriteAddress()); { TODO }
       end;
-
-      for k := 0 to 9 do
-      begin
-          memCoords := ranking[i].getCoordinates();
-          if obstacles[k].testCollision(memCoords^.y) then
-          begin
-            ranking[i].die();
-          end;
-      end;
-
-      ranking[i].update([distanceToNextObstacle/ 1000, topOfNextObstacle / 1000 ]);
-      colorFactor := 0;
-
-      blitImage := imageBird;
-      if (i = 0) then blitImage := bestBird;
-
-      SDL_BlitSurface(blitImage, ranking[i].getBlitRectAddress(), sdlWindow1, ranking[i].getSpriteAddress()); { TODO }
-
-      if (choice = 0) then break;
+    end
+    else
+    begin
+      ranking[0].update([distanceToNextObstacle/ 1000, topOfNextObstacle / 1000 ]);
+      SDL_BlitSurface(blitImage, ranking[i].getBlitRectAddress(), sdlWindow1, ranking[i].getSpriteAddress());
     end;
   end;
 
