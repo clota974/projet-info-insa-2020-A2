@@ -564,7 +564,7 @@ begin
   surface.w := 400;
   surface.h := 100;
 
-  imageButton := IMG_Load('./res/obstacle.png');
+  imageButton := IMG_Load('./res/button.png');
 
   for i := 0 to 2 do
   begin
