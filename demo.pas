@@ -110,7 +110,7 @@ const
   birdX: integer = 50; { Position de l'oiseau }
   birdY0: integer = 250; { Position de départ de l'oiseau }
   obstacleWidth: integer = 100; { Largeur de l'obstacle }
-  obstacleSpace: integer = 150; { Intervalle Y entre la partie haute et basse d'un même obstacle }
+  obstacleSpace: integer = 200; { Intervalle Y entre la partie haute et basse d'un même obstacle }
   obstacleStep: integer = 10; { Facteur d'incrémentation de la position à chaque boucle }
   obstacleInterval : integer = 550; { Distance avant le prochain obstacle }
   gravity: integer = 2; { Facteur de gravité }
@@ -154,6 +154,9 @@ var
   memCoords: coordsPtr;
   imageBird, blitImage, bestBird : PSDL_Surface;
   imageObstacle : PSDL_Surface;
+  buttons : array[0..3] of TSDL_Rect;
+  state : String;
+  choice : Integer;
 
 function rand(min, max : real) : real;
 begin
@@ -379,7 +382,7 @@ begin
 
   if myBrain.decide(features) then jump();
 
-  if (y > 900) or (y < 0) then die();
+  if (y > 450) or (y < 0) then die();
   sprite.y := y;
 
 
@@ -554,33 +557,53 @@ begin
   blitRects[1].h := 1000;
 end;
 
+procedure showMenu();
+var color : LongInt;
+begin
+  for i := 0 to 2 do
+  begin
+    buttons[i].w := 400;
+    buttons[i].h := 100;
+    buttons[i].x := 100;
+    buttons[i].y := i * 110;
+
+    color := $0000FF;
+
+    if (choice = i) then
+      color := $FF0000;
+
+    SDL_FillRect(sdlWindow1, @buttons[i], color);
+  end;
+end;
+
 { # Beginning of program }
 begin
   exitloop := false;
+  state := 'menu';
+  choice := 0;
   randomize;
 
   if SDL_Init( SDL_INIT_VIDEO ) < 0 then HALT;
-
-  imageBird := IMG_Load('./res/shark.png');
-  bestBird := IMG_Load('./res/best_shark.png');
-  imageObstacle := IMG_Load('./res/obstacle.png');
-
-
-  SetLength(birds, populationTotal);
-  for i := 0 to populationTotal - 1 do
-  begin
-    birds[i] := Bird.create();
-  end;
-
-  for i := 0 to 9 do
-  begin
-    obstacles[i] := Obstacle.create(i);
-  end;
-
   //initilization of video subsystem
 
+   imageBird := IMG_Load('./res/shark.png');
+    bestBird := IMG_Load('./res/best_shark.png');
+    imageObstacle := IMG_Load('./res/obstacle.png');
+
+
+    SetLength(birds, populationTotal);
+    for i := 0 to populationTotal - 1 do
+    begin
+      birds[i] := Bird.create();
+    end;
+
+    for i := 0 to 9 do
+    begin
+      obstacles[i] := Obstacle.create(i);
+    end;
+
+
   // sdlWindow1 := SDL_CreateWindow( 'Window1', 50, 50, 500, 500, SDL_WINDOW_SHOWN or SDL_WINDOW_ALLOW_HIGHDPI );
-  write('hellp');
 
   sdlWindow1 := SDL_SetVideoMode(500, 500, 32, SDL_SWSURFACE);
   if sdlWindow1 = nil then HALT;
@@ -605,6 +628,12 @@ begin
     {SDL_RenderClear(sdlRenderer);}
 
     SDL_FillRect(sdlWindow1, nil, $FFFFFF);
+
+    if(state = 'menu') then
+    begin
+      showMenu();
+      continue;
+    end;
 
     if (populationRemaining <= 0) then
     begin
