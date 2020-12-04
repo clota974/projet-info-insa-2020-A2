@@ -651,6 +651,11 @@ begin
       break;
     end;
 
+    if (choice = 0) and ranking[0].isAlive() = false then
+      begin
+        exitloop := true;
+      end;
+
     if (populationRemaining <= 0) then
     begin
       SetLength(ranking, populationTotal);
@@ -680,11 +685,6 @@ begin
             break;
           end;
         end;
-      end;
-
-      if (choice = 0) and ranking[0].isAlive() = false then
-      begin
-        exitloop := true;
       end;
 
       {ONCE RANKING DONE...}
