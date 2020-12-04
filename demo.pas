@@ -559,9 +559,13 @@ var
   color : LongInt;
   buttons : array[0..2] of TSDL_Rect;
   surface : TSDL_Surface;
+  imageButton: PSDL_Surface;
 begin
   surface.w := 400;
   surface.h := 100;
+
+  imageButton := IMG_Load('./res/obstacle.png');
+
   for i := 0 to 2 do
   begin
     buttons[i].w := 400;
@@ -574,7 +578,7 @@ begin
     if (choice = i) then
       color := $FF0000;
 
-    SDL_FillRect(SDL_CreateRGBSurface(SDL_SWSURFACE, 400, 100, 8,0,0,0,0), @buttons[i], color);
+    SDL_BlitSurface(imageButton, nil, @surface, @buttons[i]);
     write('3');
   end;
 end;
