@@ -647,13 +647,6 @@ begin
       break;
     end;
 
-    if (choice = 0) and (ranking[0].isAlive() = false) then
-    begin
-      write('bye');
-      exitloop := true;
-    end;
-
-    writeln('Ranking...');
     if (populationRemaining <= 0) then
     begin
       SetLength(ranking, populationTotal);
@@ -684,7 +677,11 @@ begin
           end;
         end;
       end;
-      writeln('Ranking done');
+
+      if (choice = 0) and (ranking[0].isAlive() = false) then
+      begin
+        state := 'menu';
+      end;
 
       {ONCE RANKING DONE...}
       writeln(ranking[0].getScore());
