@@ -776,7 +776,7 @@ begin
         continue;
       end;
 
-      currentScore := floor(max(currentScore, ranking[i].getScore() / obstacleInterval));
+      currentScore := floor(max(currentScore, ranking[i].getScore() * 25/ obstacleInterval));
 
       for k := 0 to 9 do
       begin
