@@ -560,10 +560,20 @@ var
   buttons : array[0..2] of TSDL_Rect;
   surface : TSDL_Surface;
   imageButton: PSDL_Surface;
+  police : PTTF_Font;
+  policecolor: PSDL_Color;
+  texte : PSDL_Surface;
+  const txt : array[0..2] of String = ('PLAY', 'WATCH', 'QUIT');
+  const taillepolice : integer = 50;
 begin
   surface.w := 400;
   surface.h := 100;
 
+  police := TTF_OPENFONT ('res/Vogue.ttf', taillepolice );
+  new(policecolor);
+  policecolor^.r:=0;
+  policecolor^.g:=0;
+  policecolor^.b:=0;
 
   for i := 0 to 2 do
   begin
@@ -571,6 +581,8 @@ begin
     buttons[i].h := 100;
     buttons[i].x := 50;
     buttons[i].y := i * 110 + 110;
+
+    SDL_BlitSurface( texte , NIL , sdlWindow1 , @buttons[i] );
 
     imageButton := IMG_Load('./res/button.png');
     if choice = i then imageButton := IMG_Load('./res/selected.png');

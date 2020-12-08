@@ -614,6 +614,7 @@ begin
   randomize;
 
   if SDL_Init( SDL_INIT_VIDEO ) < 0 then HALT;
+  if TTF_INIT = -1 then HALT ;
   //initilization of video subsystem
 
 
