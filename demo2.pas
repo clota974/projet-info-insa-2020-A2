@@ -576,7 +576,7 @@ begin
 
   for i := 0 to 2 do
   begin
-
+    write('hey');
     If i=0 then
     begin
       txt[i] := 'PLAY';
