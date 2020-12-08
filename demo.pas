@@ -590,7 +590,6 @@ begin
     textPos[i].x := 225;
     textPos[i].y := (i+1)*110 + 25;
 
-    write(textPos[i]^.clip_rect.w);
     imageButton := IMG_Load('./res/button.png');
     if choice = i then imageButton := IMG_Load('./res/selected.png');
 
@@ -603,7 +602,11 @@ end;
 
 { # Beginning of program }
 var
-  scorePos : PSDL_RECT;
+  scoreTxt : PSDL_Surface;
+  scorePos : TSDL_RECT;
+  scoreColor : PSDL_Color;
+  currentScore : Integer;
+  scoreStr : String;
 begin
   exitloop := false;
   state := 'menu';
@@ -621,8 +624,13 @@ begin
 
   scorePos.w := 0;
   scorePos.h := 0;
-  scorePos.x = 240;
-  scorePos.y = 50;
+  scorePos.x := 240;
+  scorePos.y := 50;
+
+  new(scoreColor);
+  scoreColor^.r:=255;
+  scoreColor^.g:=255;
+  scoreColor^.b:=255;
 
   SetLength(birds, populationTotal);
   for i := 0 to populationTotal - 1 do
@@ -681,15 +689,12 @@ begin
     end;
 
     SDL_FillRect(sdlWindow1, nil, $FFFFFF);
-    scoreTxt := TTF_RENDERTEXT_BLENDED (police , '50', $00000);
-    SDL_BlitSurface( scoreTxt , NIL , sdlWindow1 ,  @scorePos );
-    SDL_FreeSurface(scoreTxt);
 
     if (populationRemaining <= 0) then
     begin
       SetLength(ranking, populationTotal);
       distanceToNextObstacle := 1000;
-
+      currentScore := 0;
       populationRemaining := populationTotal;
 
       {Sort birds}
@@ -775,6 +780,8 @@ begin
         continue;
       end;
 
+      currentScore := floor(max(currentScore, ranking[i].getScore()) / obstacleSpace);
+
       for k := 0 to 9 do
       begin
           memCoords := ranking[i].getCoordinates();
@@ -792,6 +799,11 @@ begin
 
       SDL_BlitSurface(blitImage, ranking[i].getBlitRectAddress(), sdlWindow1, ranking[i].getSpriteAddress()); { TODO }
     end;
+
+    str(currentScore, scoreStr);
+    scoreTxt := TTF_RENDERTEXT_BLENDED (police , @scoreStr, scoreColor^);
+    SDL_BlitSurface( scoreTxt , NIL , sdlWindow1 ,  @scorePos );
+    SDL_FreeSurface(scoreTxt);
   end;
 
   dispose( sdlEvent );
