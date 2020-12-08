@@ -582,12 +582,12 @@ begin
     buttons[i].x := 50;
     buttons[i].y := i * 110 + 110;
 
-    SDL_BlitSurface( texte , NIL , sdlWindow1 , @buttons[i] );
 
     imageButton := IMG_Load('./res/button.png');
     if choice = i then imageButton := IMG_Load('./res/selected.png');
 
     SDL_BlitSurface(imageButton, nil, sdlWindow1, @buttons[i]);
+    SDL_BlitSurface( texte , NIL , sdlWindow1 , @buttons[i] );
   end;
 end;
 
