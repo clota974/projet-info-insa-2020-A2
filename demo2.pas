@@ -1,6 +1,7 @@
 program sdltest;
 {$MODE OBJFPC}
 {$m+}
+{$linklib SDLmain}
 {$linklib SDL}
 {$linklib SDL_ttf}
 {$linklib SDL_image}
@@ -585,7 +586,6 @@ begin
     position[i].x := 100;
     position[i].y := i*110;
     SDL_BlitSurface( texte , NIL , sdlWindow1 , @position[i] );
-    DISPOSE( policecolor );
     buttons[i].w := 400;
     buttons[i].h := 100;
     buttons[i].x := 100;
@@ -598,6 +598,7 @@ begin
 
     SDL_FillRect(@surface, @buttons[i], color);
   end;
+  DISPOSE( policecolor );
   TTF_CloseFont ( police );
   TTF_Quit ();
   SDL_FreeSurface ( texte );
