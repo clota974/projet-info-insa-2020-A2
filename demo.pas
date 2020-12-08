@@ -113,7 +113,7 @@ const
   obstacleSpace: integer = 200; { Intervalle Y entre la partie haute et basse d'un même obstacle }
   obstacleStep: integer = 10; { Facteur d'incrémentation de la position à chaque boucle }
   obstacleInterval : integer = 550; { Distance avant le prochain obstacle }
-  gravity: integer = 2; { Facteur de gravité }
+  gravity: integer = 3; { Facteur de gravité }
   birdWidth: integer = 50; { Taille de l'oiseau }
   { V2 }
   layersTotal: integer = 3;
