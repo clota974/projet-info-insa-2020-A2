@@ -563,7 +563,7 @@ var
   police : PTTF_Font;
   policecolor: PSDL_Color;
   texte : PSDL_Surface;
-  txt : array [0..2] of String;
+  const txt : array of String = ('PLAY', 'WATCH', 'QUIT');
   const taillepolice : integer = 50;
 begin
 
@@ -572,27 +572,14 @@ begin
 
   police := TTF_OPENFONT ('res/Vogue.ttf', taillepolice );
   new(policecolor);
-  policecolor^.r:=0; policecolor^.g:=0; policecolor^.b:=0;
+  policecolor^.r:=0;
+  policecolor^.g:=0;
+  policecolor^.b:=0;
 
   for i := 0 to 2 do
   begin
     write('hey');
-    If i=0 then
-    begin
-      txt[i] := 'PLAY';
-      texte := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
-    end;
-    If i=1 then
-    begin
-      txt[i]:= 'WATCH';
-      texte := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
-    end;
-
-    If i=2 then
-    begin
-      txt[i] := 'QUIT';
-      texte := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
-    end;
+    texte := TTF_RENDERUTF8_BLENDED ( police , @txt[i], policecolor^);
 
     position[i].x := 100;
     position[i].y := i*110;
