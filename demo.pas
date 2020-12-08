@@ -147,7 +147,6 @@ var
   interPerceptron : Array of Array of Array of real; // LAYERS OF NEURONS' SYNAPSE WEIGHTS
   distanceToNextObstacle: integer = 1000;
   topOfNextObstacle: real = 0;
-  colorFactor: integer;
   potentialObstacleMemory: integer;
   populationRemaining : integer = -1;
   features : array of real; { FINAL ARRAY OF INPUTS }
@@ -558,18 +557,13 @@ end;
 
 procedure showMenu();
 var
-  color : LongInt;
   buttons : array[0..2] of TSDL_Rect;
   textPos : array[0..2] of TSDL_Rect;
-  surface : TSDL_Surface;
   imageButton: PSDL_Surface;
   policecolor: PSDL_Color;
   texte : array[0..2] of PSDL_Surface;
   const txt : array[0..2] of String = ('PLAY', 'WATCH', 'QUIT');
 begin
-  surface.w := 400;
-  surface.h := 100;
-
   new(policecolor);
   policecolor^.r:=255;
   policecolor^.g:=255;
@@ -607,6 +601,7 @@ var
   scoreColor : PSDL_Color;
   currentScore : Integer;
   scoreStr : String;
+  imageBG : PSDL_Surface;
 begin
   exitloop := false;
   state := 'menu';
@@ -620,6 +615,7 @@ begin
   imageBird := IMG_Load('./res/shark.png');
   bestBird := IMG_Load('./res/best_shark.png');
   imageObstacle := IMG_Load('./res/obstacle.png');
+  imageBG := IMG_Load('./res/bg.png');
   police := TTF_OPENFONT ('./res/Vogue.ttf', taillepolice );
 
   scorePos.w := 0;
@@ -675,7 +671,7 @@ begin
       end;
     end;
 
-    SDL_FillRect(sdlWindow1, nil, $FFFFFF);
+    SDL_BlitSurface(imageBG, NIL, sdlWindow1, NIL);
 
     if(state = 'menu') then
     begin
@@ -753,7 +749,6 @@ begin
       if (distanceToNextObstacle < 50) then distanceToNextObstacle := 1000; { Reset to furthest }
 
       distanceToNextObstacle := Min(potentialObstacleMemory, distanceToNextObstacle);
-      colorFactor := 0;
       if distanceToNextObstacle = potentialObstacleMemory then
       begin
         topOfNextObstacle := obstacles[i].getTop();
@@ -772,6 +767,7 @@ begin
       begin
         if (choice = 0) then
         begin
+          SDL_Delay(1000);
           state := 'menu';
           break;
         end;
@@ -792,7 +788,6 @@ begin
       end;
 
       ranking[i].update([distanceToNextObstacle/ 1000, topOfNextObstacle / 1000 ]);
-      colorFactor := 0;
 
       blitImage := imageBird;
       if (i = 0) then blitImage := bestBird;
@@ -809,6 +804,8 @@ begin
   dispose( sdlEvent );
   SDL_FreeSurface( sdlWindow1 );
   SDL_FreeSurface( imageBird );
+  SDL_FreeSurface( imageBg );
+  SDL_FreeSurface( imageObstacle );
   TTF_CloseFont ( police );
   TTF_QUIT();
 
