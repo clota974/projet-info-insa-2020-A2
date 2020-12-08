@@ -564,7 +564,7 @@ var
   policecolor: PSDL_Color;
   texte : PSDL_Surface;
   txt : array [0..2] of String;
-  const taillepolice : integer =50;
+  const taillepolice : integer = 50;
 begin
 
   surface.w := 400;
@@ -574,25 +574,26 @@ begin
   new(policecolor);
   policecolor^.r:=0; policecolor^.g:=0; policecolor^.b:=0;
 
-  If i=0 then
-  begin
-    txt[i] := 'PLAY';
-    texte := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
-  end;
-  If i=1 then
-  begin
-    txt[i]:= 'WATCH';
-    texte := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
-  end;
-
-  If i=2 then
-  begin
-    txt[i] := 'QUIT';
-    texte := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
-  end;
-
   for i := 0 to 2 do
   begin
+
+    If i=0 then
+    begin
+      txt[i] := 'PLAY';
+      texte := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
+    end;
+    If i=1 then
+    begin
+      txt[i]:= 'WATCH';
+      texte := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
+    end;
+
+    If i=2 then
+    begin
+      txt[i] := 'QUIT';
+      texte := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
+    end;
+
     position[i].x := 100;
     position[i].y := i*110;
     SDL_BlitSurface( texte , NIL , sdlWindow1 , @position[i] );
