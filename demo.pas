@@ -563,16 +563,16 @@ var
   surface : TSDL_Surface;
   imageButton: PSDL_Surface;
   policecolor: PSDL_Color;
-  texte : PSDL_Surface;
+  texte : array[0..2] of PSDL_Surface;
   const txt : array[0..2] of String = ('PLAY', 'WATCH', 'QUIT');
 begin
   surface.w := 400;
   surface.h := 100;
 
   new(policecolor);
-  policecolor^.r:=0;
-  policecolor^.g:=0;
-  policecolor^.b:=0;
+  policecolor^.r:=255;
+  policecolor^.g:=255;
+  policecolor^.b:=255;
 
   for i := 0 to 2 do
   begin
@@ -581,13 +581,13 @@ begin
     buttons[i].x := 50;
     buttons[i].y := i * 110 + 110;
 
-    texte := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
+    texte[i] := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
 
     imageButton := IMG_Load('./res/button.png');
     if choice = i then imageButton := IMG_Load('./res/selected.png');
 
     SDL_BlitSurface(imageButton, nil, sdlWindow1, @buttons[i]);
-    SDL_BlitSurface( texte , NIL , sdlWindow1 ,  @buttons[i] );
+    SDL_BlitSurface( texte[i] , NIL , sdlWindow1 ,  @buttons[i] );
   end;
 end;
 
