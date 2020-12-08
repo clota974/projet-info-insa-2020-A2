@@ -560,6 +560,7 @@ procedure showMenu();
 var
   color : LongInt;
   buttons : array[0..2] of TSDL_Rect;
+  textPos : array[0..2] of TSDL_Rect;
   surface : TSDL_Surface;
   imageButton: PSDL_Surface;
   policecolor: PSDL_Color;
@@ -582,6 +583,12 @@ begin
     buttons[i].y := i * 110 + 110;
 
     texte[i] := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
+
+
+    textPos[i].w := 400;
+    textPos[i].h := 100;
+    textPos[i].x := 50 + (100 + texte[i].w) / 2;
+    textPos[i].y := ((i+1)*110 + texte[i].h) / 2;
 
     imageButton := IMG_Load('./res/button.png');
     if choice = i then imageButton := IMG_Load('./res/selected.png');
