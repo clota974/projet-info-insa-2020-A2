@@ -588,7 +588,7 @@ begin
     textPos[i].w := 400;
     textPos[i].h := 100;
     textPos[i].x := 50 + floor((100 + texte[i]^.w) / 2);
-    textPos[i].y := (i+1)*110 + (floor(100 + texte[i]^.h) / 2);
+    textPos[i].y := (i+1)*110 + floor(100 + texte[i]^.h / 2);
 
     imageButton := IMG_Load('./res/button.png');
     if choice = i then imageButton := IMG_Load('./res/selected.png');
