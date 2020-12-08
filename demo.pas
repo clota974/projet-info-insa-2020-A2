@@ -124,7 +124,7 @@ const
   populationTotal: integer = 100;
   crossoverRate : real = 0.15;
   randomBehavior : real = 0.2;
-  taillepolice : integer = 90;
+  taillepolice : integer = 50;
 
 { ## GLOBAL VARIABLES }
 var
