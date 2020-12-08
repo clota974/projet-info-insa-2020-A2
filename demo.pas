@@ -587,15 +587,17 @@ begin
 
     textPos[i].w := 400;
     textPos[i].h := 100;
-    textPos[i].x := 50 + 200 - floor(texte[i]^.w / 2);
-    textPos[i].y := (i+1)*110 + 50 - floor(texte[i]^.h / 2);
+    textPos[i].x := 225;
+    textPos[i].y := (i+2)*110 + 25;
 
     imageButton := IMG_Load('./res/button.png');
     if choice = i then imageButton := IMG_Load('./res/selected.png');
 
     SDL_BlitSurface(imageButton, nil, sdlWindow1, @buttons[i]);
     SDL_BlitSurface( texte[i] , NIL , sdlWindow1 ,  @textPos[i] );
+    SDL_FreeSurface( texte[i] );
   end;
+  dispose(policecolor)
 end;
 
 { # Beginning of program }
