@@ -594,7 +594,7 @@ begin
     if choice = i then imageButton := IMG_Load('./res/selected.png');
 
     SDL_BlitSurface(imageButton, nil, sdlWindow1, @buttons[i]);
-    SDL_BlitSurface( texte[i] , NIL , sdlWindow1 ,  @buttons[i] );
+    SDL_BlitSurface( texte[i] , NIL , sdlWindow1 ,  @textPos[i] );
   end;
 end;
 
