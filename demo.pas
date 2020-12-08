@@ -798,7 +798,7 @@ begin
     end;
 
     str(currentScore, scoreStr);
-    if (currentScore < 10) then scoreStr := '0' + currentScore;
+    if (currentScore < 10) then scoreStr := '0' + scoreStr;
     scoreTxt := TTF_RENDERTEXT_BLENDED (police , @scoreStr, scoreColor^);
     SDL_BlitSurface( scoreTxt , NIL , sdlWindow1 ,  @scorePos );
     SDL_FreeSurface(scoreTxt);
