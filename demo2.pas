@@ -563,7 +563,7 @@ var
   police : PTTF_Font;
   policecolor: PSDL_Color;
   texte : PSDL_Surface;
-  const txt : array of String = ('PLAY', 'WATCH', 'QUIT');
+  const txt : array[0..2] of String = ('PLAY', 'WATCH', 'QUIT');
   const taillepolice : integer = 50;
 begin
 
