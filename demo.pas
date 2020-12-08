@@ -581,7 +581,7 @@ begin
 
     textPos[i].w := 400;
     textPos[i].h := 100;
-    textPos[i].x := 200-Length(txt[i])*10;
+    textPos[i].x := 200-Length(txt[i])*5;
     textPos[i].y := (i+1)*110 + 20;
 
     imageButton := IMG_Load('./res/button.png');
