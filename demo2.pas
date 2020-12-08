@@ -585,7 +585,6 @@ begin
     position[i].x := 100;
     position[i].y := i*110;
     SDL_BlitSurface( texte , NIL , sdlWindow1 , @position[i] );
-    write('bye');
 
     buttons[i].w := 400;
     buttons[i].h := 100;
@@ -597,7 +596,9 @@ begin
     if (choice = i) then
       color := $FF0000;
 
+    write('dbye');
     SDL_FillRect(@surface, @buttons[i], color);
+    write('bye');
   end;
   // DISPOSE( policecolor );
   // TTF_CloseFont ( police );
