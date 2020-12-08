@@ -778,7 +778,7 @@ begin
         continue;
       end;
 
-      currentScore := floor(max(currentScore, ranking[i].getScore());
+      currentScore := floor(max(currentScore, ranking[i].getScore()));
 
       for k := 0 to 9 do
       begin
