@@ -599,10 +599,10 @@ begin
 
     SDL_FillRect(@surface, @buttons[i], color);
   end;
-  DISPOSE( policecolor );
-  TTF_CloseFont ( police );
-  TTF_Quit ();
-  SDL_FreeSurface ( texte );
+  // DISPOSE( policecolor );
+  // TTF_CloseFont ( police );
+  // TTF_Quit ();
+  // SDL_FreeSurface ( texte );
 end;
 
 { # Beginning of program }
