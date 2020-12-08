@@ -152,7 +152,7 @@ var
   features : array of real; { FINAL ARRAY OF INPUTS }
   ranking : array of bird;
   memCoords: coordsPtr;
-  imageBird, blitImage, bestBird : PSDL_Surface;
+  imageBird, blitImage, bestBird, imageButton, imageSelected : PSDL_Surface;
   imageObstacle : PSDL_Surface;
   state : String;
   choice : Integer;
@@ -559,7 +559,7 @@ procedure showMenu();
 var
   buttons : array[0..2] of TSDL_Rect;
   textPos : array[0..2] of TSDL_Rect;
-  imageButton: PSDL_Surface;
+  imageCurrButton: PSDL_Surface;
   policecolor: PSDL_Color;
   texte : array[0..2] of PSDL_Surface;
   const txt : array[0..2] of String = ('PLAY', 'WATCH', 'QUIT');
@@ -584,10 +584,10 @@ begin
     textPos[i].x := 200-Length(txt[i])*5;
     textPos[i].y := (i+1)*110 + 20;
 
-    imageButton := IMG_Load('./res/button.png');
-    if choice = i then imageButton := IMG_Load('./res/selected.png');
+    imageCurrButton := imageButton;
+    if choice = i then imageCurrButton := imageSelected;
 
-    SDL_BlitSurface(imageButton, nil, sdlWindow1, @buttons[i]);
+    SDL_BlitSurface(imageCurrButton, nil, sdlWindow1, @buttons[i]);
     SDL_BlitSurface( texte[i] , NIL , sdlWindow1 ,  @textPos[i] );
     SDL_FreeSurface( texte[i] );
   end;
@@ -616,6 +616,8 @@ begin
   bestBird := IMG_Load('./res/best_shark.png');
   imageObstacle := IMG_Load('./res/obstacle.png');
   imageBG := IMG_Load('./res/bg.png');
+  imageSelected := IMG_Load('./res/selected.png');
+  imageButton := IMG_Load('./res/button.png');
   police := TTF_OPENFONT ('./res/Vogue.ttf', taillepolice );
 
   scorePos.w := 0;
@@ -767,7 +769,7 @@ begin
       begin
         if (choice = 0) then
         begin
-          SDL_Delay(1000);
+          SDL_Delay(3000);
           state := 'menu';
           break;
         end;
@@ -776,7 +778,7 @@ begin
         continue;
       end;
 
-      currentScore := floor(max(currentScore, ranking[i].getScore() * 25/ obstacleInterval));
+      currentScore := floor(max(currentScore, ranking[i].getScore() * 25/ 2 * obstacleInterval));
 
       for k := 0 to 9 do
       begin
@@ -796,6 +798,7 @@ begin
     end;
 
     str(currentScore, scoreStr);
+    if (currentScore < 10) then scoreStr += '0';
     scoreTxt := TTF_RENDERTEXT_BLENDED (police , @scoreStr, scoreColor^);
     SDL_BlitSurface( scoreTxt , NIL , sdlWindow1 ,  @scorePos );
     SDL_FreeSurface(scoreTxt);
@@ -803,6 +806,10 @@ begin
 
   dispose( sdlEvent );
   SDL_FreeSurface( sdlWindow1 );
+  SDL_FreeSurface( imageButton );
+  SDL_FreeSurface( bestBird );
+  SDL_FreeSurface( imageSelected );
+  SDL_FreeSurface( imageObstacle);
   SDL_FreeSurface( imageBird );
   SDL_FreeSurface( imageBg );
   SDL_FreeSurface( imageObstacle );
