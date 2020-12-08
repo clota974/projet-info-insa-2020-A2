@@ -495,7 +495,7 @@ end;
 
 function Obstacle.testCollision(birdY : integer) : boolean;
 begin
-  if ((x >= birdX + birdWidth) or (x <= birdX)) then exit(false);
+  if ((x >= birdX + birdWidth) or (x + obstacleWidth <= birdX)) then exit(false);
 
   { => obstacle is on the x-axis of the bird }
 
@@ -778,7 +778,7 @@ begin
         continue;
       end;
 
-      currentScore := floor(max(currentScore, ranking[i].getScore() / obstacleSpace));
+      currentScore := floor(max(currentScore, ranking[i].getScore() / 2500));
 
       for k := 0 to 9 do
       begin
