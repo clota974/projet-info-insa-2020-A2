@@ -810,7 +810,6 @@ begin
   SDL_FreeSurface( bestBird );
   SDL_FreeSurface( imageSelected );
   SDL_FreeSurface( imageObstacle);
-  SDL_FreeSurface( imageBird );
   SDL_FreeSurface( imageBg );
   SDL_FreeSurface( imageObstacle );
   TTF_CloseFont ( police );
