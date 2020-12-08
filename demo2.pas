@@ -1,10 +1,9 @@
 program sdltest;
 {$MODE OBJFPC}
 {$m+}
-{$linkframework Cocoa}
-{$linkframework OpenGL}
 {$linklib SDLmain}
 {$linklib SDL}
+{$linklib SDL_ttf}
 {$linklib SDL_image}
 
 
@@ -113,7 +112,7 @@ const
   obstacleSpace: integer = 200; { Intervalle Y entre la partie haute et basse d'un même obstacle }
   obstacleStep: integer = 10; { Facteur d'incrémentation de la position à chaque boucle }
   obstacleInterval : integer = 550; { Distance avant le prochain obstacle }
-  gravity: integer = 3; { Facteur de gravité }
+  gravity: integer = 2; { Facteur de gravité }
   birdWidth: integer = 50; { Taille de l'oiseau }
   { V2 }
   layersTotal: integer = 3;
@@ -124,7 +123,6 @@ const
   populationTotal: integer = 100;
   crossoverRate : real = 0.15;
   randomBehavior : real = 0.2;
-  taillepolice : integer = 50;
 
 { ## GLOBAL VARIABLES }
 var
@@ -147,16 +145,16 @@ var
   interPerceptron : Array of Array of Array of real; // LAYERS OF NEURONS' SYNAPSE WEIGHTS
   distanceToNextObstacle: integer = 1000;
   topOfNextObstacle: real = 0;
+  colorFactor: integer;
   potentialObstacleMemory: integer;
   populationRemaining : integer = -1;
   features : array of real; { FINAL ARRAY OF INPUTS }
   ranking : array of bird;
   memCoords: coordsPtr;
-  imageBird, blitImage, bestBird, imageButton, imageSelected : PSDL_Surface;
+  imageBird, blitImage, bestBird : PSDL_Surface;
   imageObstacle : PSDL_Surface;
   state : String;
   choice : Integer;
-  police : PTTF_Font;
 
 function rand(min, max : real) : real;
 begin
@@ -345,6 +343,8 @@ begin
 
   blitRect.w := birdWidth;
   blitRect.h := birdWidth;
+  blitRect.x := 0; { BLIT AT ORIGIN }
+  blitRect.y := 0;
 
   ran := Random(10000);
 
@@ -378,9 +378,9 @@ begin
 
   // features[2] := (y / 1000) - features[2];
 
-  if myBrain.decide(features) and (choice = 1) then jump();
+  if myBrain.decide(features) then jump();
 
-  if (y > 500 - birdWidth) or (y < 0) then die();
+  if (y > 450) or (y < 0) then die();
   sprite.y := y;
 
 
@@ -495,7 +495,7 @@ end;
 
 function Obstacle.testCollision(birdY : integer) : boolean;
 begin
-  if ((x >= birdX + birdWidth) or (x + obstacleWidth <= birdX)) then exit(false);
+  if ((x >= birdX + birdWidth) or (x <= birdX - birdWidth)) then exit(false);
 
   { => obstacle is on the x-axis of the bird }
 
@@ -507,7 +507,7 @@ function Obstacle.update() : integer;
 begin
   x := x - obstacleStep;
 
-  if (x < -obstacleWidth) then reset(9);
+  if (x < 0) then reset(9);
 
   sprites[0].x := x;
   sprites[1].x := x;
@@ -557,78 +557,69 @@ end;
 
 procedure showMenu();
 var
+  color : LongInt;
   buttons : array[0..2] of TSDL_Rect;
-  textPos : array[0..2] of TSDL_Rect;
-  imageCurrButton: PSDL_Surface;
+  surface : TSDL_Surface;
+  position : array[0..2] of TSDL_Rect;
+  police : PTTF_Font;
   policecolor: PSDL_Color;
-  texte : array[0..2] of PSDL_Surface;
+  texte : PSDL_Surface;
   const txt : array[0..2] of String = ('PLAY', 'WATCH', 'QUIT');
+  const taillepolice : integer = 50;
 begin
+
+  surface.w := 400;
+  surface.h := 100;
+
   new(policecolor);
-  policecolor^.r:=255;
-  policecolor^.g:=255;
-  policecolor^.b:=255;
+  policecolor^.r:=0;
+  policecolor^.g:=0;
+  policecolor^.b:=0;
 
   for i := 0 to 2 do
   begin
+    write('hey');
+    texte := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
+
+    position[i].x := 100;
+    position[i].y := i*110;
+    SDL_BlitSurface( texte , NIL , sdlWindow1 , @position[i] );
+
     buttons[i].w := 400;
     buttons[i].h := 100;
-    buttons[i].x := 50;
-    buttons[i].y := i * 110 + 110;
+    buttons[i].x := 100;
+    buttons[i].y := i * 110;
 
-    texte[i] := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
+    color := $0000FF;
 
+    if (choice = i) then
+      color := $FF0000;
 
-    textPos[i].w := 400;
-    textPos[i].h := 100;
-    textPos[i].x := 200-Length(txt[i])*5;
-    textPos[i].y := (i+1)*110 + 20;
-
-    imageCurrButton := imageButton;
-    if choice = i then imageCurrButton := imageSelected;
-
-    SDL_BlitSurface(imageCurrButton, nil, sdlWindow1, @buttons[i]);
-    SDL_BlitSurface( texte[i] , NIL , sdlWindow1 ,  @textPos[i] );
-    SDL_FreeSurface( texte[i] );
+    write('dbye');
+    SDL_FillRect(@surface, @buttons[i], color);
+    write('bye');
   end;
-  dispose(policecolor)
+  DISPOSE( policecolor );
+  // TTF_Quit ();
+  // SDL_FreeSurface ( texte );
 end;
 
 { # Beginning of program }
-var
-  scoreTxt : PSDL_Surface;
-  scorePos : TSDL_RECT;
-  scoreColor : PSDL_Color;
-  currentScore : Integer;
-  scoreStr : String;
-  imageBG : PSDL_Surface;
 begin
   exitloop := false;
   state := 'menu';
   choice := 0;
   randomize;
-
   if SDL_Init( SDL_INIT_VIDEO ) < 0 then HALT;
-  if TTF_INIT = -1 then HALT;
+  if TTF_INIT = -1 then HALT ;
   //initilization of video subsystem
+
+  police := TTF_OPENFONT ('res/Vogue.ttf', taillepolice );
 
   imageBird := IMG_Load('./res/shark.png');
   bestBird := IMG_Load('./res/best_shark.png');
   imageObstacle := IMG_Load('./res/obstacle.png');
-  imageBG := IMG_Load('./res/bg.png');
-  imageSelected := IMG_Load('./res/selected.png');
-  imageButton := IMG_Load('./res/button.png');
-  police := TTF_OPENFONT ('./res/Vogue.ttf', taillepolice );
 
-  scorePos.w := 0;
-  scorePos.h := 0;
-  scorePos.x := 240;
-  scorePos.y := 50;
-
-  new(scoreColor);
-  scoreColor^.r:=255;
-  scoreColor^.g:=203;
-  scoreColor^.b:=0;
 
   SetLength(birds, populationTotal);
   for i := 0 to populationTotal - 1 do
@@ -642,57 +633,43 @@ begin
   end;
 
 
+  // sdlWindow1 := SDL_CreateWindow( 'Window1', 50, 50, 500, 500, SDL_WINDOW_SHOWN or SDL_WINDOW_ALLOW_HIGHDPI );
+
   sdlWindow1 := SDL_SetVideoMode(500, 500, 32, SDL_SWSURFACE);
   if sdlWindow1 = nil then HALT;
 
+  // sdlRenderer := SDL_CreateRenderer(sdlWindow1, -1, SDL_RENDERER_ACCELERATED);
   new( sdlEvent );
 
   while exitloop = false do
   begin
-    SDL_Flip(sdlWindow1);
-    SDL_Delay( 30 );
     while SDL_PollEvent( sdlEvent ) = 1 do
     begin
       case sdlEvent^.type_ of
 
         //keyboard events
         SDL_KEYDOWN: begin
-          if sdlEvent^.key.keysym.sym = SDLK_SPACE then ranking[0].jump();
-          if sdlEvent^.key.keysym.sym = SDLK_ESCAPE then state := 'menu';
-          if sdlEvent^.key.keysym.sym = SDLK_RETURN then
-          begin
-            state := 'playing';
-            populationRemaining := -1; { RESET }
-          end;
-          if state = 'menu' then
-          begin
-            if (sdlEvent^.key.keysym.sym = SDLK_DOWN) and (choice < 2) then choice := choice + 1;
-            if (sdlEvent^.key.keysym.sym = SDLK_UP) and (choice > 0) then choice := choice - 1;
-          end;
+          if sdlEvent^.key.keysym.sym = SDLK_SPACE then birds[0].jump();
+          if sdlEvent^.key.keysym.sym = SDLK_ESCAPE then exitloop := true;
         end;
       end;
     end;
+    {SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);}
+    {SDL_RenderClear(sdlRenderer);}
 
-    SDL_BlitSurface(imageBG, NIL, sdlWindow1, NIL);
+    SDL_FillRect(sdlWindow1, nil, $FFFFFF);
 
     if(state = 'menu') then
     begin
       showMenu();
       continue;
-    end
-    else if (choice = 2) then
-    begin
-      exitloop := true;
-      write('bye');
-      break;
     end;
-
 
     if (populationRemaining <= 0) then
     begin
       SetLength(ranking, populationTotal);
       distanceToNextObstacle := 1000;
-      currentScore := 0;
+
       populationRemaining := populationTotal;
 
       {Sort birds}
@@ -720,7 +697,8 @@ begin
       end;
 
       {ONCE RANKING DONE...}
-      writeln(ranking[0].getScore());
+      write(ranking[0].getScore(), ' ');
+      writeln(' ');
       for k := 0 to populationTotal - 1 do
       begin
         if k / populationTotal > ellitism then
@@ -733,6 +711,9 @@ begin
 
           ranking[k].mutate();
         end;
+
+
+        { if (k / populationTotal > ellitism) then birds[k].cross(ranking[0].getBrain());}
 
         ranking[k].reset();
       end;
@@ -751,8 +732,10 @@ begin
       if (distanceToNextObstacle < 50) then distanceToNextObstacle := 1000; { Reset to furthest }
 
       distanceToNextObstacle := Min(potentialObstacleMemory, distanceToNextObstacle);
+      colorFactor := 0;
       if distanceToNextObstacle = potentialObstacleMemory then
       begin
+        colorFactor := 255;
         topOfNextObstacle := obstacles[i].getTop();
       end;
       SDL_BlitSurface(imageObstacle, obstacles[i].getBlitRectAddress(0), sdlWindow1, obstacles[i].getSpriteAddress(0)); { TODO }
@@ -760,25 +743,14 @@ begin
     end;
 
     i := populationTotal;
-    if (choice = 0) then i := 1; { ONLY FIRST BIRD }
     while i > 0 do
     begin
       i := i - 1;
 
       if (ranking[i].isAlive() = false) then
       begin
-        if (choice = 0) then
-        begin
-          SDL_Delay(3000);
-          state := 'menu';
-          break;
-        end;
-
-        {ELSE}
         continue;
       end;
-
-      currentScore := floor(max(currentScore, ranking[i].getScore() * 0.03));
 
       for k := 0 to 9 do
       begin
@@ -790,30 +762,22 @@ begin
       end;
 
       ranking[i].update([distanceToNextObstacle/ 1000, topOfNextObstacle / 1000 ]);
+      colorFactor := 0;
 
       blitImage := imageBird;
       if (i = 0) then blitImage := bestBird;
 
       SDL_BlitSurface(blitImage, ranking[i].getBlitRectAddress(), sdlWindow1, ranking[i].getSpriteAddress()); { TODO }
     end;
-
-    str(currentScore, scoreStr);
-    if (currentScore < 10) then scoreStr := '0' + scoreStr;
-    scoreTxt := TTF_RENDERTEXT_BLENDED (police , @scoreStr, scoreColor^);
-    SDL_BlitSurface( scoreTxt , NIL , sdlWindow1 ,  @scorePos );
-    SDL_FreeSurface(scoreTxt);
+    SDL_Flip(sdlWindow1);
+    SDL_Delay( 15 );
   end;
 
   dispose( sdlEvent );
   SDL_FreeSurface( sdlWindow1 );
-  SDL_FreeSurface( imageButton );
-  SDL_FreeSurface( bestBird );
-  SDL_FreeSurface( imageSelected );
-  SDL_FreeSurface( imageObstacle);
-  SDL_FreeSurface( imageBg );
+  SDL_FreeSurface( imageBird );
   TTF_CloseFont ( police );
   TTF_QUIT();
-
   {shutting down video subsystem}
   SDL_Quit();
 end.
