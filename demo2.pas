@@ -580,6 +580,7 @@ begin
   begin
     write('hey');
     texte := TTF_RENDERUTF8_BLENDED ( police , @txt[i], policecolor^);
+    write('bye');
 
     position[i].x := 100;
     position[i].y := i*110;
