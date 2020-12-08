@@ -571,7 +571,6 @@ begin
   surface.w := 400;
   surface.h := 100;
 
-  police := TTF_OPENFONT ('res/Vogue.ttf', taillepolice );
   new(policecolor);
   policecolor^.r:=0;
   policecolor^.g:=0;
@@ -580,7 +579,7 @@ begin
   for i := 0 to 2 do
   begin
     write('hey');
-    texte := TTF_RENDERUTF8_BLENDED ( police , @txt[i], policecolor^);
+    texte := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
 
     position[i].x := 100;
     position[i].y := i*110;
@@ -600,8 +599,7 @@ begin
     SDL_FillRect(@surface, @buttons[i], color);
     write('bye');
   end;
-  // DISPOSE( policecolor );
-  // TTF_CloseFont ( police );
+  DISPOSE( policecolor );
   // TTF_Quit ();
   // SDL_FreeSurface ( texte );
 end;
@@ -612,27 +610,27 @@ begin
   state := 'menu';
   choice := 0;
   randomize;
-
   if SDL_Init( SDL_INIT_VIDEO ) < 0 then HALT;
   if TTF_INIT = -1 then HALT ;
   //initilization of video subsystem
 
+  police := TTF_OPENFONT ('res/Vogue.ttf', taillepolice );
 
-   imageBird := IMG_Load('./res/shark.png');
-    bestBird := IMG_Load('./res/best_shark.png');
-    imageObstacle := IMG_Load('./res/obstacle.png');
+  imageBird := IMG_Load('./res/shark.png');
+  bestBird := IMG_Load('./res/best_shark.png');
+  imageObstacle := IMG_Load('./res/obstacle.png');
 
 
-    SetLength(birds, populationTotal);
-    for i := 0 to populationTotal - 1 do
-    begin
-      birds[i] := Bird.create();
-    end;
+  SetLength(birds, populationTotal);
+  for i := 0 to populationTotal - 1 do
+  begin
+    birds[i] := Bird.create();
+  end;
 
-    for i := 0 to 9 do
-    begin
-      obstacles[i] := Obstacle.create(i);
-    end;
+  for i := 0 to 9 do
+  begin
+    obstacles[i] := Obstacle.create(i);
+  end;
 
 
   // sdlWindow1 := SDL_CreateWindow( 'Window1', 50, 50, 500, 500, SDL_WINDOW_SHOWN or SDL_WINDOW_ALLOW_HIGHDPI );
@@ -778,6 +776,8 @@ begin
   dispose( sdlEvent );
   SDL_FreeSurface( sdlWindow1 );
   SDL_FreeSurface( imageBird );
+  TTF_CloseFont ( police );
+  TTF_QUIT();
   {shutting down video subsystem}
   SDL_Quit();
 end.
