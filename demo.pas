@@ -381,7 +381,7 @@ begin
 
   if myBrain.decide(features) and (choice = 1) then jump();
 
-  if (y > 450) or (y < 0) then die();
+  if (y > 500 - birdWidth) or (y < 0) then die();
   sprite.y := y;
 
 
@@ -496,7 +496,7 @@ end;
 
 function Obstacle.testCollision(birdY : integer) : boolean;
 begin
-  if ((x >= birdX + birdWidth) or (x <= birdX - birdWidth)) then exit(false);
+  if ((x >= birdX + birdWidth) or (x <= birdX)) then exit(false);
 
   { => obstacle is on the x-axis of the bird }
 
@@ -780,7 +780,7 @@ begin
         continue;
       end;
 
-      currentScore := ceil(max(currentScore, ranking[i].getScore()) / obstacleSpace);
+      currentScore := floor(max(currentScore, ranking[i].getScore()) / obstacleInterval);
 
       for k := 0 to 9 do
       begin
