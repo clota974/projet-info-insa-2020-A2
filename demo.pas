@@ -590,6 +590,7 @@ begin
     textPos[i].x := 225;
     textPos[i].y := (i+1)*110 + 25;
 
+    write(textPos[i]^.clip_rect.w)
     imageButton := IMG_Load('./res/button.png');
     if choice = i then imageButton := IMG_Load('./res/selected.png');
 
