@@ -780,7 +780,7 @@ begin
         continue;
       end;
 
-      currentScore := floor(max(currentScore, ranking[i].getScore()) / obstacleSpace);
+      currentScore := ceil(max(currentScore, ranking[i].getScore()) / obstacleSpace);
 
       for k := 0 to 9 do
       begin
