@@ -564,7 +564,7 @@ var
   policecolor: PSDL_Color;
   texte : PSDL_Surface;
   const txt : array[0..2] of String = ('PLAY', 'WATCH', 'QUIT');
-  const taillepolice : integer = 50;
+  const taillepolice : integer = 90;
 begin
   surface.w := 400;
   surface.h := 100;
@@ -582,6 +582,7 @@ begin
     buttons[i].x := 50;
     buttons[i].y := i * 110 + 110;
 
+    texte := TTF_RENDERUTF8_BLENDED ( police , @txt[i], policecolor^);
 
     imageButton := IMG_Load('./res/button.png');
     if choice = i then imageButton := IMG_Load('./res/selected.png');
