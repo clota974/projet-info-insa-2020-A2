@@ -675,6 +675,7 @@ begin
       end;
     end;
 
+    SDL_FillRect(sdlWindow1, nil, $FFFFFF);
 
     if(state = 'menu') then
     begin
@@ -688,7 +689,6 @@ begin
       break;
     end;
 
-    SDL_FillRect(sdlWindow1, nil, $FFFFFF);
 
     if (populationRemaining <= 0) then
     begin
