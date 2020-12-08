@@ -629,8 +629,8 @@ begin
 
   new(scoreColor);
   scoreColor^.r:=255;
-  scoreColor^.g:=255;
-  scoreColor^.b:=255;
+  scoreColor^.g:=203;
+  scoreColor^.b:=0;
 
   SetLength(birds, populationTotal);
   for i := 0 to populationTotal - 1 do
