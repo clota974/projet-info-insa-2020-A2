@@ -581,11 +581,12 @@ begin
   begin
     write('hey');
     texte := TTF_RENDERUTF8_BLENDED ( police , @txt[i], policecolor^);
-    write('bye');
 
     position[i].x := 100;
     position[i].y := i*110;
     SDL_BlitSurface( texte , NIL , sdlWindow1 , @position[i] );
+    write('bye');
+
     buttons[i].w := 400;
     buttons[i].h := 100;
     buttons[i].x := 100;
