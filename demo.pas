@@ -124,6 +124,7 @@ const
   populationTotal: integer = 100;
   crossoverRate : real = 0.15;
   randomBehavior : real = 0.2;
+  taillepolice : integer = 90;
 
 { ## GLOBAL VARIABLES }
 var
@@ -156,6 +157,7 @@ var
   imageObstacle : PSDL_Surface;
   state : String;
   choice : Integer;
+  police : PTTF_Font;
 
 function rand(min, max : real) : real;
 begin
@@ -560,16 +562,13 @@ var
   buttons : array[0..2] of TSDL_Rect;
   surface : TSDL_Surface;
   imageButton: PSDL_Surface;
-  police : PTTF_Font;
   policecolor: PSDL_Color;
   texte : PSDL_Surface;
   const txt : array[0..2] of String = ('PLAY', 'WATCH', 'QUIT');
-  const taillepolice : integer = 90;
 begin
   surface.w := 400;
   surface.h := 100;
 
-  police := TTF_OPENFONT ('res/Vogue.ttf', taillepolice );
   new(policecolor);
   policecolor^.r:=0;
   policecolor^.g:=0;
@@ -582,13 +581,13 @@ begin
     buttons[i].x := 50;
     buttons[i].y := i * 110 + 110;
 
-    texte := TTF_RENDERUTF8_BLENDED ( police , @txt[i], policecolor^);
+    texte := TTF_RENDERTEXT_BLENDED ( police , @txt[i], policecolor^);
 
     imageButton := IMG_Load('./res/button.png');
     if choice = i then imageButton := IMG_Load('./res/selected.png');
 
     SDL_BlitSurface(imageButton, nil, sdlWindow1, @buttons[i]);
-    SDL_BlitSurface( texte , NIL , sdlWindow1 , @buttons[i] );
+    SDL_BlitSurface( texte , NIL , sdlWindow1 ,  @buttons[i] );
   end;
 end;
 
@@ -600,11 +599,13 @@ begin
   randomize;
 
   if SDL_Init( SDL_INIT_VIDEO ) < 0 then HALT;
+  if TTF_INIT = -1 then HALT;
   //initilization of video subsystem
 
   imageBird := IMG_Load('./res/shark.png');
   bestBird := IMG_Load('./res/best_shark.png');
   imageObstacle := IMG_Load('./res/obstacle.png');
+  police := TTF_OPENFONT ('./res/Vogue.ttf', taillepolice );
 
 
   SetLength(birds, populationTotal);
@@ -776,6 +777,8 @@ begin
   dispose( sdlEvent );
   SDL_FreeSurface( sdlWindow1 );
   SDL_FreeSurface( imageBird );
+  TTF_CloseFont ( police );
+  TTF_QUIT();
 
   {shutting down video subsystem}
   SDL_Quit();
