@@ -590,7 +590,7 @@ begin
     textPos[i].x := 225;
     textPos[i].y := (i+1)*110 + 25;
 
-    write(textPos[i]^.clip_rect.w)
+    write(textPos[i]^.clip_rect.w);
     imageButton := IMG_Load('./res/button.png');
     if choice = i then imageButton := IMG_Load('./res/selected.png');
 
@@ -602,6 +602,8 @@ begin
 end;
 
 { # Beginning of program }
+var
+  scorePos : PSDL_RECT;
 begin
   exitloop := false;
   state := 'menu';
@@ -617,6 +619,10 @@ begin
   imageObstacle := IMG_Load('./res/obstacle.png');
   police := TTF_OPENFONT ('./res/Vogue.ttf', taillepolice );
 
+  scorePos.w := 0;
+  scorePos.h := 0;
+  scorePos.x = 240;
+  scorePos.y = 50;
 
   SetLength(birds, populationTotal);
   for i := 0 to populationTotal - 1 do
@@ -661,7 +667,6 @@ begin
       end;
     end;
 
-    SDL_FillRect(sdlWindow1, nil, $FFFFFF);
 
     if(state = 'menu') then
     begin
@@ -674,6 +679,11 @@ begin
       write('bye');
       break;
     end;
+
+    SDL_FillRect(sdlWindow1, nil, $FFFFFF);
+    scoreTxt := TTF_RENDERTEXT_BLENDED (police , '50', $00000);
+    SDL_BlitSurface( scoreTxt , NIL , sdlWindow1 ,  @scorePos );
+    SDL_FreeSurface(scoreTxt);
 
     if (populationRemaining <= 0) then
     begin
