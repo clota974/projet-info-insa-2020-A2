@@ -778,7 +778,7 @@ begin
         continue;
       end;
 
-      currentScore := floor(max(currentScore, ranking[i].getScore()));
+      currentScore := floor(max(currentScore, ranking[i].getScore() / obstacleSpace));
 
       for k := 0 to 9 do
       begin
@@ -798,7 +798,7 @@ begin
     end;
 
     str(currentScore, scoreStr);
-    if (currentScore < 10) then scoreStr += '0';
+    if (currentScore < 10) then scoreStr := '0' + currentScore;
     scoreTxt := TTF_RENDERTEXT_BLENDED (police , @scoreStr, scoreColor^);
     SDL_BlitSurface( scoreTxt , NIL , sdlWindow1 ,  @scorePos );
     SDL_FreeSurface(scoreTxt);
@@ -811,7 +811,6 @@ begin
   SDL_FreeSurface( imageSelected );
   SDL_FreeSurface( imageObstacle);
   SDL_FreeSurface( imageBg );
-  SDL_FreeSurface( imageObstacle );
   TTF_CloseFont ( police );
   TTF_QUIT();
 
