@@ -110,7 +110,7 @@ const
   birdX: integer = 50; { Position de l'oiseau }
   birdY0: integer = 250; { Position de départ de l'oiseau }
   obstacleWidth: integer = 100; { Largeur de l'obstacle }
-  obstacleSpace: integer = 200; { Intervalle Y entre la partie haute et basse d'un même obstacle }
+  obstacleSpace: integer = 150; { Intervalle Y entre la partie haute et basse d'un même obstacle }
   obstacleStep: integer = 10; { Facteur d'incrémentation de la position à chaque boucle }
   obstacleInterval : integer = 550; { Distance avant le prochain obstacle }
   gravity: integer = 3; { Facteur de gravité }
