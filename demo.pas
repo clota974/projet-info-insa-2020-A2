@@ -120,7 +120,7 @@ const
   layers : array[0..2] of integer = (3,5,1);
   mutationProbability: real = 0.25;
   ellitism : real = 0.1; { Birds ratio that remain unchanged }
-  mutationRange: real = 0.15;
+  mutationRange: real = 0.05;
   populationTotal: integer = 100;
   crossoverRate : real = 0.15;
   randomBehavior : real = 0.2;
