@@ -117,7 +117,7 @@ const
   birdWidth: integer = 50; { Taille de l'oiseau }
   { V2 }
   layersTotal: integer = 3;
-  layers : array[0..2] of integer = (3,5,1);
+  layers : array[0..2] of integer = (2,5,1);
   mutationProbability: real = 0.5;
   ellitism : real = 0.15; { Birds ratio that remain unchanged }
   mutationRange: real = 0.1;
