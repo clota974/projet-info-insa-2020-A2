@@ -201,6 +201,7 @@ end;
 procedure Neuron.naturalMutation();
 var
   i : integer;
+begin
   for i := 0 to length(weights) - 1 do
   begin
     if Random > mutationProbability then
@@ -228,7 +229,7 @@ end;
 (*  -------------------------------- *)
 constructor Brain.create();
 var
-  i : integer; 
+  i : integer;
   j : integer;
 begin
   SetLength(perceptron, layersTotal);
@@ -334,7 +335,7 @@ begin
   begin
     writeln(';');
     write(i, ':');
-    for j := 0 to layers[ii] - 1 do
+    for j := 0 to layers[i] - 1 do
     begin
       perceptron[i][j].printWeights();
       write('B', ceil(perceptron[i][j].bias * 1000), ' / ');
@@ -492,7 +493,7 @@ end;
 
 procedure Bird.cross(brainClone : perceptronType);
 var
-  i : integer; 
+  i : integer;
   j : integer;
 begin
   for i := 0 to layersTotal - 1 do
@@ -582,8 +583,8 @@ var
   imageCurrButton: PSDL_Surface;
   policecolor: PSDL_Color;
   texte : array[0..2] of PSDL_Surface;
-  const txt : array[0..2] of String = ('PLAY', 'WATCH', 'QUIT');
   i : integer;
+  const txt : array[0..2] of String = ('PLAY', 'WATCH', 'QUIT');
 begin
   new(policecolor);
   policecolor^.r:=255;
@@ -731,7 +732,7 @@ begin
           tmpMax := Max(tmpMax, birds[ij].getScore());
         end;
 
-        for iij := 0 to populationTotal - 1 do
+        for ij := 0 to populationTotal - 1 do
         begin
           if birds[ij].isRanked() then continue;
 
