@@ -128,15 +128,6 @@ const
 
 { ## GLOBAL VARIABLES }
 var
-  i : integer; { Inter }
-  j : integer;
-  k : integer;
-  ii : integer;
-  ij : integer;
-  ik : integer;
-  iii : integer;
-  iij : integer;
-  iik : integer;
   tmpMax : integer;
   sdlWindow1: PSDL_Surface;
   sdlEvent: PSDL_Event;
@@ -170,12 +161,14 @@ end;
 
 { ## NEURON }
 constructor Neuron.create(outNeurons : integer);
+var
+  j : integer;
 begin
   { BETWEEN -1 AND 1}
   SetLength(weights, outNeurons);
-  for iij := 0 to outNeurons - 1 do
+  for j := 0 to outNeurons - 1 do
   begin
-    weights[iij] := rand(-0.1, 0.1);
+    weights[j] := rand(-0.1, 0.1);
   end;
 
   bias := rand(-0.1, 0.1);
@@ -188,12 +181,14 @@ begin
 end;
 
 function Neuron.output(v : real) : realArray;
+var
+  i : integer;
 begin
   SetLength(output, length(weights));
 
-  for iii := 0 to length(output) - 1 do
+  for i := 0 to length(output) - 1 do
   begin
-    output[iii] := activationFunction(v * weights[iii] + bias);
+    output[i] := activationFunction(v * weights[i] + bias);
   end;
 end;
 
@@ -204,12 +199,13 @@ begin
 end;
 
 procedure Neuron.naturalMutation();
-begin
-  for iii := 0 to length(weights) - 1 do
+var
+  i : integer;
+  for i := 0 to length(weights) - 1 do
   begin
     if Random > mutationProbability then
     begin
-      weights[iii] := weights[iii] + rand(-mutationRange, mutationRange);
+      weights[i] := weights[i] + rand(-mutationRange, mutationRange);
     end;
   end;
 
@@ -220,25 +216,30 @@ begin
 end;
 
 procedure Neuron.printWeights();
+var
+  k : integer;
 begin
-  for ik := 0 to length(weights) - 1 do
+  for k := 0 to length(weights) - 1 do
   begin
-    write(ceil(weights[ik]*100), ' ');
+    write(ceil(weights[k]*100), ' ');
   end;
 end;
 
 (*  -------------------------------- *)
 constructor Brain.create();
+var
+  i : integer; 
+  j : integer;
 begin
   SetLength(perceptron, layersTotal);
 
-  for ij := 0 to layersTotal - 2 do
+  for j := 0 to layersTotal - 2 do
   begin
-    SetLength(perceptron[ij], layers[ij]);
+    SetLength(perceptron[j], layers[j]);
 
-    for ii := 0 to layers[ij] - 1 do
+    for i := 0 to layers[j] - 1 do
     begin
-      perceptron[ij][ii] := Neuron.create(layers[ij + 1]);
+      perceptron[j][i] := Neuron.create(layers[j + 1]);
     end;
   end;
 
@@ -252,6 +253,12 @@ begin
 end;
 
 function Brain.decide(features : array of real) : boolean;
+var
+  i : integer;
+  k : integer;
+ ik : integer;
+ ii : integer;
+ ij : integer;
 begin
   SetLength(interPerceptron, layersTotal); { FOR NON WEIGHTED INPUTS }
 
@@ -259,9 +266,9 @@ begin
   begin
     SetLength(interPerceptron[k], layers[k]);
 
-    for iii := 0 to layers[k] - 1 do
+    for i := 0 to layers[k] - 1 do
     begin
-      SetLength(interPerceptron[k][iii], layers[k+1]);
+      SetLength(interPerceptron[k][i], layers[k+1]);
     end;
   end;
 
@@ -269,9 +276,9 @@ begin
   SetLength(interPerceptron[layersTotal-1][0], 1);
 
   { SET FEATURES IN INTERPERCEPTRON }
-  for iik := 0 to layers[0] - 1 do
+  for ik := 0 to layers[0] - 1 do
   begin
-    interPerceptron[0][iik] := perceptron[0][iik].output(features[iik]);
+    interPerceptron[0][ik] := perceptron[0][ik].output(features[ik]);
   end;
 
   for ii := 1 to layersTotal - 1 do
@@ -293,36 +300,44 @@ begin
 end;
 
 procedure Brain.setNeuronTo(layerIx, neuronIx: integer; newNeuron: Neuron);
+var
+  j : integer;
 begin
   perceptron[layerIx][neuronIx].bias := newNeuron.bias; { UNREFERENCE THE ARRAY COPY }
 
-  for iij := 0 to length(perceptron[layerIx][neuronIx].weights) - 1 do
+  for j := 0 to length(perceptron[layerIx][neuronIx].weights) - 1 do
   begin
-    perceptron[layerIx][neuronIx].weights[iij] := newNeuron.weights[iij];
+    perceptron[layerIx][neuronIx].weights[j] := newNeuron.weights[j];
   end;
 end;
 
 procedure Brain.mutate();
+var
+  i : integer;
+  j : integer;
 begin
-  for ii := 0 to layersTotal - 1 do
+  for i := 0 to layersTotal - 1 do
   begin
-    for ij := 0 to layers[ii] - 1 do
+    for j := 0 to layers[i] - 1 do
     begin
-      perceptron[ii][ij].naturalMutation();
+      perceptron[i][j].naturalMutation();
     end;
   end;
 end;
 
 procedure Brain.printPerceptron();
+var
+  i : integer;
+  j : integer;
 begin
-  for ii := 0 to layersTotal - 1 do
+  for i := 0 to layersTotal - 1 do
   begin
     writeln(';');
-    write(ii, ':');
-    for ij := 0 to layers[ii] - 1 do
+    write(i, ':');
+    for j := 0 to layers[ii] - 1 do
     begin
-      perceptron[ii][ij].printWeights();
-      write('B', ceil(perceptron[ii][ij].bias * 1000), ' / ');
+      perceptron[i][j].printWeights();
+      write('B', ceil(perceptron[i][j].bias * 1000), ' / ');
     end;
   end;
 end;
@@ -362,6 +377,8 @@ begin
 end;
 
 function Bird.update(inputs : array of real) : integer;
+var
+  j : integer;
 begin
   speedY := speedY + gravity;
   y := y + speedY;
@@ -474,14 +491,17 @@ begin
 end;
 
 procedure Bird.cross(brainClone : perceptronType);
+var
+  i : integer; 
+  j : integer;
 begin
-  for ii := 0 to layersTotal - 1 do
+  for i := 0 to layersTotal - 1 do
   begin
-    for ij := 0 to layers[ii] - 1 do
+    for j := 0 to layers[i] - 1 do
     begin
       if Random > crossoverRate then
       begin
-        myBrain.setNeuronTo(ii, ij, brainClone[ii][ij]);
+        myBrain.setNeuronTo(i, j, brainClone[i][j]);
       end;
     end;
   end;
@@ -563,6 +583,7 @@ var
   policecolor: PSDL_Color;
   texte : array[0..2] of PSDL_Surface;
   const txt : array[0..2] of String = ('PLAY', 'WATCH', 'QUIT');
+  i : integer;
 begin
   new(policecolor);
   policecolor^.r:=255;
@@ -602,6 +623,10 @@ var
   currentScore : Integer;
   scoreStr : String;
   imageBG : PSDL_Surface;
+  i : integer;
+  k : integer;
+  ii : integer;
+  ij : integer;
 begin
   exitloop := false;
   state := 'menu';
@@ -696,24 +721,24 @@ begin
       populationRemaining := populationTotal;
 
       {Sort birds}
-      for iii := 0 to populationTotal - 1 do
+      for ii := 0 to populationTotal - 1 do
       begin
         { FIND MAX }
         tmpMax := -1;
-        for iij := 0 to populationTotal - 1 do
+        for ij := 0 to populationTotal - 1 do
         begin
-          if birds[iij].isRanked() then continue;
-          tmpMax := Max(tmpMax, birds[iij].getScore());
+          if birds[ij].isRanked() then continue;
+          tmpMax := Max(tmpMax, birds[ij].getScore());
         end;
 
         for iij := 0 to populationTotal - 1 do
         begin
-          if birds[iij].isRanked() then continue;
+          if birds[ij].isRanked() then continue;
 
-          if birds[iij].getScore() = tmpMax then
+          if birds[ij].getScore() = tmpMax then
           begin
-            ranking[iii] := birds[iij];
-            birds[iij].rank();
+            ranking[ii] := birds[ij];
+            birds[ij].rank();
             break;
           end;
         end;
