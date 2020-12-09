@@ -815,7 +815,7 @@ begin
           end;
       end;
 
-      ranking[i].update([distanceToNextObstacle/ 1000, topOfNextObstacle / 1000 ]);
+      ranking[i].update([distanceToNextObstacle/ 500, topOfNextObstacle / 500 ]);
 
       blitImage := imageBird;
       if (i = 0) then blitImage := bestBird;
