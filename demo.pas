@@ -651,11 +651,11 @@ begin
   if ParamCount() > 0 then
   begin
     write(ParamCount());
-    birdPath := PChar('./res/'+ParamStr(2)+'.png');
-    bestBirdPath := PChar('./res/'+ParamStr(2)+'.png');
+    birdPath := PChar('./res/'+ParamStr(1)+'.png');
+    bestBirdPath := PChar('./res/'+ParamStr(1)+'.png');
     if ParamCount() > 1 then
     begin
-      bestBirdPath := PChar('./res/'+ParamStr(1)+'.png');
+      bestBirdPath := PChar('./res/'+ParamStr(2)+'.png');
     end;
   end;
 
