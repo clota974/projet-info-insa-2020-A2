@@ -183,13 +183,16 @@ end;
 function Neuron.output(v : real) : realArray;
 var
   i : integer;
+  tmp : realArray;
 begin
-  SetLength(output, length(weights));
+  SetLength(tmp, length(weights));
 
-  for i := 0 to length(output) - 1 do
+  for i := 0 to length(tmp) - 1 do
   begin
-    output[i] := activationFunction(v * weights[i] + bias);
+    tmp[i] := activationFunction(v * weights[i] + bias);
   end;
+
+  output := tmp;
 end;
 
 procedure Neuron.setWeightAndBias(newWeights : realArray; newBias : real);
@@ -628,18 +631,34 @@ var
   k : integer;
   ii : integer;
   ij : integer;
+  birdPath : String;
+  bestBirdPath: String;
 begin
   exitloop := false;
   state := 'menu';
   choice := 0;
   randomize;
+  ranking := [];
 
   if SDL_Init( SDL_INIT_VIDEO ) < 0 then HALT;
   if TTF_INIT = -1 then HALT;
   //initilization of video subsystem
 
-  imageBird := IMG_Load('./res/shark.png');
-  bestBird := IMG_Load('./res/best_shark.png');
+  birdPath := './res/shark.png';
+  bestBirdPath := './res/best_shark.png';
+
+  if ParamCount() > 0 then
+  begin
+    birdPath := './res/'+ParamStr(0)+'.png';
+    bestBirdPath := birdPath;
+    if ParamCount() > 1 then
+    begin
+      bestBirdPath := './res/'+ParamStr(1)+'.png';
+    end;
+  end;
+
+  imageBird := IMG_Load(@birdPath);
+  bestBird := IMG_Load(@bestBirdPath);
   imageObstacle := IMG_Load('./res/obstacle.png');
   imageBG := IMG_Load('./res/bg.png');
   imageSelected := IMG_Load('./res/selected.png');
