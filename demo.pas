@@ -631,8 +631,8 @@ var
   k : integer;
   ii : integer;
   ij : integer;
-  birdPath : String;
-  bestBirdPath: String;
+  birdPath : PChar;
+  bestBirdPath: PChar;
 begin
   exitloop := false;
   state := 'menu';
@@ -650,16 +650,17 @@ begin
 
   if ParamCount() > 0 then
   begin
-    birdPath := './res/'+ParamStr(0)+'.png';
-    bestBirdPath := birdPath;
+    write(ParamCount());
+    birdPath := PChar('./res/'+ParamStr(2)+'.png');
+    bestBirdPath := PChar('./res/'+ParamStr(2)+'.png');
     if ParamCount() > 1 then
     begin
-      bestBirdPath := './res/'+ParamStr(1)+'.png';
+      bestBirdPath := PChar('./res/'+ParamStr(1)+'.png');
     end;
   end;
 
-  imageBird := IMG_Load(@birdPath);
-  bestBird := IMG_Load(@bestBirdPath);
+  imageBird := IMG_Load(birdPath);
+  bestBird := IMG_Load(bestBirdPath);
   imageObstacle := IMG_Load('./res/obstacle.png');
   imageBG := IMG_Load('./res/bg.png');
   imageSelected := IMG_Load('./res/selected.png');
@@ -703,7 +704,7 @@ begin
 
         //keyboard events
         SDL_KEYDOWN: begin
-          if (sdlEvent^.key.keysym.sym = SDLK_SPACE) and (state = 'menu') then ranking[0].jump();
+          if (sdlEvent^.key.keysym.sym = SDLK_SPACE) and (state <> 'menu') then ranking[0].jump();
           if sdlEvent^.key.keysym.sym = SDLK_ESCAPE then state := 'menu';
           if sdlEvent^.key.keysym.sym = SDLK_RETURN then
           begin
