@@ -2,3 +2,4 @@
 *.res
 ppaslink.sh
 .DS_Store
+./demo

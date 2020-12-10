@@ -1,12 +1,5 @@
-program sdltest;
+program flappyShark;
 {$MODE OBJFPC}
-{$m+}
-{$linkframework Cocoa}
-{$linkframework OpenGL}
-{$linklib SDLmain}
-{$linklib SDL}
-{$linklib SDL_image}
-
 
 uses sdl, math, sdl_image, sdl_ttf;
 
