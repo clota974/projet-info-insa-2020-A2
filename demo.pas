@@ -638,7 +638,8 @@ begin
   state := 'menu';
   choice := 0;
   randomize;
-  ranking := [];
+
+  SetLength(ranking, populationTotal);
 
   if SDL_Init( SDL_INIT_VIDEO ) < 0 then HALT;
   if TTF_INIT = -1 then HALT;
@@ -702,7 +703,7 @@ begin
 
         //keyboard events
         SDL_KEYDOWN: begin
-          if sdlEvent^.key.keysym.sym = SDLK_SPACE then ranking[0].jump();
+          if (sdlEvent^.key.keysym.sym = SDLK_SPACE) and (state = 'menu') then ranking[0].jump();
           if sdlEvent^.key.keysym.sym = SDLK_ESCAPE then state := 'menu';
           if sdlEvent^.key.keysym.sym = SDLK_RETURN then
           begin
